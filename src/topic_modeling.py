@@ -110,8 +110,7 @@ class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
             Dictionary of DataFrames with results for each dataset
         """
         # results_df = pd.DataFrame()
-        all_results = {}
-        
+        results_df = pd.DataFrame()
         # Check input format
         if not isinstance(documents_dict, dict):
             # assume it's a single dataset
@@ -119,32 +118,31 @@ class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
             documents_dict = {'default': (documents, true_labels)}
         
         # Process each dataset
-        for dataset_name, (documents, true_labels) in documents_dict.items():
-            results = {}
-            
+        for dataset_name, (documents, true_labels) in documents_dict.items():            
             print(f"Evaluating models on dataset: {dataset_name}")
             
             for name, pipeline in self.pipelines.items():
                 try:
                     eval_results = pipeline.evaluate(documents, true_labels)
-                    # Add model name and dataset to results
                     eval_results['Model'] = name
                     eval_results['Dataset'] = dataset_name
-                    results[name] = eval_results
+
+                    if results_df.empty:
+                        results_df = pd.DataFrame([eval_results])  
+                    else:
+                        new_df = pd.DataFrame([eval_results])
+                        
+                        # Explicitly cast columns to match dtypes in results_df
+                        for col in results_df.columns:
+                            if col in new_df.columns:
+                                new_df[col] = new_df[col].astype(results_df[col].dtype)
+                        
+                        results_df = pd.concat([results_df, new_df], ignore_index=True)
+
                 except Exception as e:
                     print(f"  Error evaluating model {name}: {str(e)}")
                     
-            # Convert results to DataFrame
-            if results:
-                results_df = pd.DataFrame.from_dict(results, orient='index')                  
-                all_results[dataset_name] = results_df
-            else:
-                all_results[dataset_name] = pd.DataFrame()
-
-        merged_results = pd.concat(all_results.values(), keys=all_results.keys())
-
-        self.results = merged_results.reset_index(level=0, drop=True).reset_index()
-                
+        self.results = results_df
         return
 
         
