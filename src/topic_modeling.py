@@ -16,11 +16,11 @@ class IPipelineOrchestrator(ABC):
     def evaluate(self, documents_dict, sort_by=None):
         pass
 
-    @abstractmethod
-    def print_topics(self, model_name=None, n_words=10):
-        pass
+    # @abstractmethod
+    # def print_topics(self, model_name=None, n_words=10):
+    #     pass
 
-class PipelineOrchestrator(IPipelineOrchestrator):
+class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
     """
     A class to orchestrate multiple topic model pipelines with different configurations
     and evaluate their performance.
@@ -46,8 +46,10 @@ class PipelineOrchestrator(IPipelineOrchestrator):
             model = LDAModel(**config)
         elif model_type == 'LSI':
             model = LSIModel(**config)
-        else:  # NMF
+        elif model_type == 'NMF':
             model = NMFModel(**config)
+        else:
+            raise ValueError(f"Unknown model type: {model_type}")
         
         # Create a pipeline for the model
         pipeline = TopicModelPipeline(model)
@@ -94,7 +96,7 @@ class PipelineOrchestrator(IPipelineOrchestrator):
                 
         return added_models
     
-    def evaluate(self, documents_dict, sort_by=None):
+    def evaluate(self, documents_dict, noise_strategies=None):
         """
         Evaluate all models in the orchestrator on multiple datasets and store results.
         
@@ -107,14 +109,13 @@ class PipelineOrchestrator(IPipelineOrchestrator):
         Returns:
             Dictionary of DataFrames with results for each dataset
         """
+        # results_df = pd.DataFrame()
         all_results = {}
         
         # Check input format
         if not isinstance(documents_dict, dict):
-            # Backward compatibility - assume it's a single dataset
+            # assume it's a single dataset
             documents = documents_dict
-            true_labels = sort_by  # In the old interface, this was the second parameter
-            sort_by = None
             documents_dict = {'default': (documents, true_labels)}
         
         # Process each dataset
@@ -135,52 +136,42 @@ class PipelineOrchestrator(IPipelineOrchestrator):
                     
             # Convert results to DataFrame
             if results:
-                results_df = pd.DataFrame.from_dict(results, orient='index')
-                
-                # Sort results if requested
-                if sort_by is not None and sort_by in results_df.columns:
-                    # For coherence and ARI, higher is better
-                    if sort_by in ['Topic Coherence', 'ARI Score']:
-                        results_df = results_df.sort_values(by=sort_by, ascending=False)
-                    # For cosine similarity and reconstruction error, lower is better
-                    else:
-                        results_df = results_df.sort_values(by=sort_by, ascending=True)
-                        
+                results_df = pd.DataFrame.from_dict(results, orient='index')                  
                 all_results[dataset_name] = results_df
             else:
                 all_results[dataset_name] = pd.DataFrame()
 
-        merged_results = pd.concat(all_results.values(), keys=all_results.keys(), names=['Dataset'])
-        # Store all results in instance
-        self.results = merged_results
+        merged_results = pd.concat(all_results.values(), keys=all_results.keys())
+
+        self.results = merged_results.reset_index(level=0, drop=True).reset_index()
                 
-        return merged_results
+        return
 
         
-    def print_topics(self, model_name=None, n_words=10):
-        """
-        Print the topics discovered by a model.
+    # def print_topics(self, model_name=None, n_words=10):
+    #     """
+    #     Print the topics discovered by a model.
         
-        Args:
-            model_name: Name of the model (if None, prints for all models)
-            n_words: Number of words to show for each topic
-        """
-        if model_name is not None:
-            if model_name not in self.pipelines:
-                raise ValueError(f"Unknown model: {model_name}")
+    #     Args:
+    #         model_name: Name of the model (if None, prints for all models)
+    #         n_words: Number of words to show for each topic
+    #     """
+    #     if model_name is not None:
+    #         if model_name not in self.pipelines:
+    #             raise ValueError(f"Unknown model: {model_name}")
                 
-            pipeline = self.pipelines[model_name]
-            topics = pipeline.get_topics()
+    #         pipeline = self.pipelines[model_name]
+    #         topics = pipeline.get_topics()
             
-            print(f"Topics for model {model_name}:")
-            for i, topic in enumerate(topics):
-                print(f"Topic {i}: {', '.join(topic[:n_words])}")
-            print()
-        else:
-            for name, pipeline in self.pipelines.items():
-                topics = pipeline.get_topics()
+    #         print(f"Topics for model {model_name}:")
+    #         for i, topic in enumerate(topics):
+    #             print(f"Topic {i}: {', '.join(topic[:n_words])}")
+    #         print()
+    #     else:
+    #         for name, pipeline in self.pipelines.items():
+    #             topics = pipeline.get_topics()
                 
-                print(f"Topics for model {name}:")
-                for i, topic in enumerate(topics):
-                    print(f"Topic {i}: {', '.join(topic[:n_words])}")
-                print()
+    #             print(f"Topics for model {name}:")
+    #             for i, topic in enumerate(topics):
+    #                 print(f"Topic {i}: {', '.join(topic[:n_words])}")
+    #             print()
