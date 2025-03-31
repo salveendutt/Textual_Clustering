@@ -21,7 +21,7 @@ We introduce noise to test how robust the algorithms are. Below are different ty
 <details>
   <summary><b>Noise versions in a text sample</b></summary>
 
-### Adding No Noise
+### No Noise
 
 ```
 "Hey, I am a bunch of texts.
