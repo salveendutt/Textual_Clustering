@@ -16,8 +16,10 @@ To download this dataset use the following link: https://www.kaggle.com/datasets
 ## Methods
 
 ## Noise
+We introduce noise to test how robust the algorithms are. Below are different types of noise applied to the same text sample.
 
-In text clustering, noise can be introduced to test how robust the clustering algorithm is. Below are different types of noise applied to the same text sample.
+<details>
+  <summary><b>Noise versions in a text sample</b></summary>
 
 ### Adding No Noise
 
@@ -93,4 +95,24 @@ I like to be grouped with similar texts .
 If you put me in the wrong group , I 'll feel lost .
 So , find a way to cluster me with others like me !"
 ```
+
+### Replacing with Antonyms Noise
+
+```
+"Hey , I am a bunch of texts . 
+I like to be grouped with similar texts . 
+If you put me in the wrong group , I 'll feel lost .
+So , find a way to cluster me with others like me !"
+```
+
+### All Noise combined
+```
+Hey , I am bunch of texts . 
+I happen like to be whip grouped with similar texts . 
+If you me in the wrong group , I 'll flavor gain . 
+So , a waqy snailflower to cluster me others like
+```
+
+</details>
+
 

@@ -196,3 +196,16 @@ class ReplaceWithAntonymsNoise(INoiseStrategy):
                 words[idx] = replacement
                 
         return ' '.join(words)
+
+class CompositeNoise(INoiseStrategy):
+    """Applies multiple noise strategies sequentially."""
+    def __init__(self, noise_strategies):
+        self.noise_strategies = noise_strategies
+
+    def _apply_per_row(self, text):
+        pass
+    
+    def apply(self, documents):
+        for strategy in self.noise_strategies:
+            documents = strategy.apply(documents)
+        return documents
