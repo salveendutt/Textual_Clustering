@@ -1,5 +1,9 @@
-from noise_strategy import *
+import sys
+import os
 import pandas as pd
+# Add src/ to sys.path if running script directly
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
+from noise_strategy import *
 
 original_text = """Hey, I am a bunch of texts.
 I like to be grouped with similar texts.
