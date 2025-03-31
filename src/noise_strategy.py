@@ -16,7 +16,7 @@ class INoiseStrategy(ABC):
 
 class NoNoise(INoiseStrategy):
     def _apply_per_row(self, text):
-        return text
+        pass
     
     def apply(self, documents):
         return documents

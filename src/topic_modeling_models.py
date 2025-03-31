@@ -44,7 +44,7 @@ class ITopicModel(ABC):
     @abstractmethod
     def get_topics(self, n_words=10):
         pass
-
+    
 
 # LDA Implementation
 class LDAModel(ITopicModel):
