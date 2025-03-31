@@ -1,153 +1,143 @@
 from abc import ABC, abstractmethod
-from sklearn.decomposition import NMF
-from sklearn.decomposition import TruncatedSVD
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.decomposition import LatentDirichletAllocation
-from sklearn.metrics import adjusted_rand_score
-from sklearn.metrics.pairwise import cosine_similarity
-from gensim.models.coherencemodel import CoherenceModel
-from gensim.corpora.dictionary import Dictionary
-import pandas as pd 
-import numpy as np
-from nltk.stem.snowball import SnowballStemmer
-import re
-from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
-import string
-from nltk.tokenize.casual import casual_tokenize
-
-PUNC = string.punctuation
-
-def process_text(text):
-    text = casual_tokenize(text)
-    text = [each.lower() for each in text]
-    text = [re.sub('[0-9]+', '', each) for each in text]
-    text = [SnowballStemmer('english').stem(each) for each in text]
-    text = [w for w in text if w not in PUNC]
-    text = [w for w in text if w not in ENGLISH_STOP_WORDS]
-    text = [each for each in text if len(each) > 1]
-    text = [each for each in text if ' ' not in each]
-    return text
-
-
-# Interface for Topic Models
-class ITopicModel(ABC):
+from typing import Any, Dict, List, Optional
+import pandas as pd
+from topic_modeling_models import *
+from tqdm.auto import tqdm
+from noise_strategy import NoNoise
+class IPipelineOrchestrator(ABC):
     @abstractmethod
-    def fit_transform(self, documents):
-        pass
-    
-    @abstractmethod
-    def get_topics(self, n_words=10):
+    def add_model(self, model_type: str, config: Dict[str, Any], name: Optional[str] = None):
         pass
 
+    @abstractmethod
+    def add_models_grid(self, model_types: List[str], param_grid: Dict[str, List[Any]]):
+        pass
 
-# LDA Implementation
-class LDAModel(ITopicModel):
-    def __init__(self, n_topics=5):
-        self.n_topics = n_topics
-        self.vectorizer = CountVectorizer(stop_words='english', preprocessor=' '.join)
-        self.model = LatentDirichletAllocation(n_components=n_topics, random_state=42)
-
-    def fit_transform(self, documents):
-        self.term_matrix = self.vectorizer.fit_transform(documents)
-        return self.model.fit_transform(self.term_matrix)
-
-    def get_topics(self, n_words=10):
-        feature_names = self.vectorizer.get_feature_names_out()
-        topics = []
-        for topic_idx, topic in enumerate(self.model.components_):
-            topics.append([feature_names[i] for i in topic.argsort()[:-n_words - 1:-1]])
-        return topics
-
-# LSI Implementation
-class LSIModel(ITopicModel):
-    def __init__(self, n_topics=5):
-        self.n_topics = n_topics
-        self.vectorizer = TfidfVectorizer(stop_words='english', preprocessor=' '.join)
-        self.model = TruncatedSVD(n_components=n_topics, random_state=42)
-
-    def fit_transform(self, documents):
-        self.term_matrix = self.vectorizer.fit_transform(documents)
-        return self.model.fit_transform(self.term_matrix)
-
-    def get_topics(self, n_words=10):
-        feature_names = self.vectorizer.get_feature_names_out()
-        topics = []
-        for topic_idx, topic in enumerate(self.model.components_):
-            topics.append([feature_names[i] for i in topic.argsort()[:-n_words - 1:-1]])
-        return topics
-
-# NMF Implementation
-class NMFModel(ITopicModel):
-    def __init__(self, n_topics=5):
-        self.n_topics = n_topics
-        self.vectorizer = TfidfVectorizer(stop_words='english', preprocessor=' '.join)
-        self.model = NMF(n_components=n_topics, random_state=42)
-
-    def fit_transform(self, documents):
-        self.term_matrix = self.vectorizer.fit_transform(documents)
-        return self.model.fit_transform(self.term_matrix)
-
-    def get_topics(self, n_words=5):
-        feature_names = self.vectorizer.get_feature_names_out()
-        topics = []
-        for topic_idx, topic in enumerate(self.model.components_):
-            topics.append([feature_names[i] for i in topic.argsort()[:-n_words - 1:-1]])
-        return topics
-        
-
-# Pipeline for running any topic model
-class TopicModelPipeline:
-    def __init__(self, model: ITopicModel):
-        self.model = model
-        self.c = None
-        self.assigned_topics = None
-        self.topic_distributions = None
-
-    def get_topics(self):
-        return self.model.get_topics()
-
-    def assign_topics(self, documents_processed: list):
-        topic_distributions = self.model.fit_transform(documents_processed)
-        assigned_topics = topic_distributions.argmax(axis=1)
-        self.assigned_topics = assigned_topics
-        self.topic_distributions = topic_distributions
+    @abstractmethod
+    def evaluate(self, documents_dict, sort_by=None):
+        pass
     
-    def evaluate(self, documents, true_labels: pd.DataFrame=None):
-        documents_processed = documents.apply(process_text).tolist()
-        true_labels = true_labels.tolist()
 
-        # If the topics have not been assigned, assign them
-        if self.topic_distributions is None:
-            self.assign_topics(documents_processed)
+class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
+    """
+    A class to orchestrate multiple topic model pipelines with different configurations
+    and evaluate their performance.
+    """
+    def __init__(self):
+        self.pipelines = {}
+        self.results = {}
+        
+    def add_model(self, model_type: str, config: Dict[str, Any], name: Optional[str] = None):
+        """
+        Add a new topic model to the orchestrator.
+        
+        Args:
+            model_type: Type of model ('LDA', 'LSI', or 'NMF')
+            config: Configuration parameters for the model
+            name: Optional custom name for the model
+        """
+        if model_type not in ['LDA', 'LSI', 'NMF']:
+            raise ValueError(f"Unknown model type: {model_type}. Expected 'LDA', 'LSI', or 'NMF'")
+        
+        # Create the model based on type
+        if model_type == 'LDA':
+            model = LDAModel(**config)
+        elif model_type == 'LSI':
+            model = LSIModel(**config)
+        elif model_type == 'NMF':
+            model = NMFModel(**config)
+        else:
+            raise ValueError(f"Unknown model type: {model_type}")
+        
+        # Create a pipeline for the model
+        pipeline = TopicModelPipeline(model)
+        
+        # Generate a name if not provided
+        if name is None:
+            n_topics = config.get('n_topics', 5)
+            name = f"{model_type}_{n_topics}"
+            
+        # Add counter suffix if name already exists
+        base_name = name
+        counter = 1
+        while name in self.pipelines:
+            name = f"{base_name}_{counter}"
+            counter += 1
+            
+        self.pipelines[name] = pipeline
+        return name
+    
+    def add_models_grid(self, model_types: List[str], param_grid: Dict[str, List[Any]]):
+        """
+        Add multiple models using a grid of parameters.
+        
+        Args:
+            model_types: List of model types ('LDA', 'LSI', 'NMF')
+            param_grid: Dictionary of parameter lists to create a grid
+                        Example: {'n_topics': [5, 10, 15]}
+        
+        Returns:
+            List of names of the added models
+        """
+        added_models = []
+        
+        # Create all combinations of parameters
+        import itertools
+        param_names = param_grid.keys()
+        param_values = [param_grid[name] for name in param_names]
+        
+        for model_type in model_types:
+            for params in itertools.product(*param_values):
+                config = {name: value for name, value in zip(param_names, params)}
+                name = self.add_model(model_type, config)
+                added_models.append(name)
+                
+        return added_models
+    
+    def evaluate(self, documents_dict, noise_strategies=None):
+        """
+        Evaluate all models in the orchestrator on multiple datasets and store results.
+        
+        Args:
+            documents_dict: Dictionary where keys are dataset names and values are tuples of (documents, true_labels)
+                        Each documents should be a pandas Series/list of text documents
+                        true_labels can be None if not available
+            sort_by: Optional metric to sort results by
+                
+        Returns:
+            Dictionary of DataFrames with results for each dataset
+        """
+        results_df = pd.DataFrame()
+        # Check input format
+        if not isinstance(documents_dict, dict):
+            documents = documents_dict
+            documents_dict = {'default': (documents, true_labels)}
+        
+        # Process each dataset
+        for dataset_name, (documents, true_labels) in tqdm(documents_dict.items(), desc="Datasets", position=0):
+            for name, pipeline in tqdm(self.pipelines.items(), desc="Models", position=1, leave=False):
+                if noise_strategies == None:
+                    noise_strategies = [NoNoise()]
 
-        topic_distributions = self.topic_distributions
-        assigned_topics = self.assigned_topics
-        
-        # ARI Score
-        ari_score = adjusted_rand_score(true_labels, assigned_topics)
-        
-        # Topic Coherence
-        tokenized_docs = documents_processed
-        dictionary = Dictionary(tokenized_docs)
-        topic_words = self.get_topics()
-        
-        coherence_model = CoherenceModel(
-            topics=topic_words, 
-            texts=tokenized_docs, 
-            dictionary=dictionary, 
-            coherence='c_v'
-        )
-        coherence_score = coherence_model.get_coherence()
-        
-        # Cosine Similarity
-        cosine_sim = np.mean(cosine_similarity(topic_distributions))
-        
-        # Reconstruction Error (only for NMF)
-        reconstruction_error = self.model.model.reconstruction_err_ if isinstance(self.model, NMFModel) else None
-        
-        return {
-            "ARI Score": ari_score,
-            "Topic Coherence": coherence_score,
-            "Cosine Similarity": cosine_sim,
-            "Reconstruction Error": reconstruction_error
-        }
+                for noise_strategy in tqdm(noise_strategies, desc="Noise Strategies", position=2, leave=False):
+                    try:
+                        noisy_documents = noise_strategy.apply(documents)
+                        eval_results = pipeline.evaluate(noisy_documents, true_labels)
+                        eval_results['Model'] = name
+                        eval_results['Dataset'] = dataset_name
+                        eval_results['Noise'] = noise_strategy.__class__.__name__
+
+                        if results_df.empty:
+                            results_df = pd.DataFrame([eval_results])  
+                        else:
+                            new_df = pd.DataFrame([eval_results])
+                            # Explicitly cast columns to match dtypes in results_df
+                            new_df = new_df.astype({col: results_df[col].dtype for col in results_df.columns if col in new_df.columns})
+
+                            results_df = pd.concat([results_df, new_df], ignore_index=True)
+
+                    except Exception as e:
+                        print(f"  Error evaluating model {name}: {str(e)}")
+                    
+        self.results = results_df[['Dataset', 'Noise', 'Model', 'ARI Score', 'Topics Coherence', 'Cosine Similarity', 'Reconstruction Error']].sort_values(by=['Dataset', 'Noise', 'Model'])
+        return
