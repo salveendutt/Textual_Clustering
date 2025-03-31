@@ -22,7 +22,10 @@ In text clustering, noise can be introduced to test how robust the clustering al
 ### Adding No Noise
 
 ```
-"Hey, I am a bunch of texts.\nI like to be grouped with similar texts.\nIf you put me in the wrong group, I'll feel lost.\nSo, find a way to cluster me with others like me!"
+"Hey, I am a bunch of texts.
+I like to be grouped with similar texts.
+If you put me in the wrong group, I'll feel lost.
+So, find a way to cluster me with others like me!"
 ```
 
 ---
@@ -30,7 +33,10 @@ In text clustering, noise can be introduced to test how robust the clustering al
 ### Adding Random Characters Noise
 
 ```
-"Hey, I am a bunch of texts. I like to be grouped with similar texts. If you put me in the wrong group, I'll feel lost. So, find a way to cluster me with others like me!"
+"Hey, I am a bunch of texts. 
+I like to be grouped with similar texts. 
+If you put me in the wrong group, I'll feel lost. 
+So, find a way to cluster me with others like me!"
 ```
 
 ---
@@ -38,7 +44,10 @@ In text clustering, noise can be introduced to test how robust the clustering al
 ### Adding Random Words Noise
 
 ```
-"Hey, I am a bunch of texts. I like hausmannite to be grouped decide with similar texts. If you put me in the wrong prepossessing group, I'll feel lost. So, find a way to cluster me with others like me!"
+"Hey, I am a bunch of texts. 
+I like hausmannite to be grouped decide with similar texts. 
+If you put me in the wrong prepossessing group, I'll feel lost. 
+So, find a way to cluster me with others like me!"
 ```
 
 ---
@@ -46,7 +55,10 @@ In text clustering, noise can be introduced to test how robust the clustering al
 ### Deleting Random Words Noise
 
 ```
-"Hey, I am a bunch of texts. I like to be with similar texts. If you put me in the wrong group, I'll feel lost. So, find way to cluster me with others me!"
+"Hey, I am a bunch of texts. 
+I like to be with similar texts. 
+If you put me in the wrong group, I'll feel lost. 
+So, find way to cluster me with others me!"
 ```
 
 ---
@@ -54,7 +66,10 @@ In text clustering, noise can be introduced to test how robust the clustering al
 ### Shuffling Sentences Noise
 
 ```
-"I like to be grouped with similar texts. Hey, I am a bunch of texts. If you put me in the wrong group, I'll feel lost. So, find a way to cluster me with others like me!"
+"I like to be grouped with similar texts. 
+Hey, I am a bunch of texts. 
+If you put me in the wrong group, I'll feel lost. 
+So, find a way to cluster me with others like me!"
 ```
 
 ---
@@ -62,7 +77,10 @@ In text clustering, noise can be introduced to test how robust the clustering al
 ### Replacing with Synonyms Noise
 
 ```
-"Hey , I am a lot of texts . I like to be grouped with similar texts . If you put me in the wrong group , I 'll feel lost . So , find a way to cluster me with others like me !"
+"Hey , I am a lot of texts . 
+I like to be grouped with similar texts . 
+If you put me in the wrong group , I 'll feel lost . 
+So , find a way to cluster me with others like me !"
 ```
 
 ---
@@ -70,6 +88,9 @@ In text clustering, noise can be introduced to test how robust the clustering al
 ### Replacing with Antonyms Noise
 
 ```
-"Hey , I am a bunch of texts . I like to be grouped with similar texts . If you put me in the wrong group , I 'll feel lost . So , find a way to cluster me with others like me !"
+"Hey , I am a bunch of texts . 
+I like to be grouped with similar texts . 
+If you put me in the wrong group , I 'll feel lost .
+So , find a way to cluster me with others like me !"
 ```
 
