@@ -4,14 +4,16 @@ from nltk.corpus import wordnet
 
 class INoiseStrategy(ABC):
     @abstractmethod
-    def apply(self, documents, noise_level):
+    def _apply_per_row(self, documents, noise_level):
         """Apply noise to the pandas series."""
         pass
-
+    
+    def apply(self, documents):
+        return documents.apply(self._apply_per_row)
 
 
 class AddRandomWordsNoise(INoiseStrategy):
-    def apply(self, documents, noise_level=0.1):
+    def _apply_per_row(self, text, noise_level=0.1):
         probability = noise_level
         # Preload synsets to avoid repeated expensive calls
         synsets = list(wordnet.all_synsets())
@@ -24,7 +26,7 @@ class AddRandomWordsNoise(INoiseStrategy):
                 if '_' not in word:  # Ensure single-word output
                     return word
                 
-        words = documents.split()
+        words = text.split()
         modified_words = []
         
         for word in words:
@@ -37,9 +39,9 @@ class AddRandomWordsNoise(INoiseStrategy):
 
 
 class AddRandomCharsNoise(INoiseStrategy):
-    def apply(self, documents, noise_level=0.1):
+    def _apply_per_row(self, text, noise_level=0.1):
         probability = noise_level
-        words = documents.split()
+        words = text.split()
         modified_words = []
         
         for word in words:
@@ -52,14 +54,14 @@ class AddRandomCharsNoise(INoiseStrategy):
             modified_words.append(word)
         
         return ' '.join(modified_words)
-
+    
 
 class DeleteRandomWordsNoise(INoiseStrategy):
-    def apply(self, documents, noise_level=0.1):
+    def _apply_per_row(self, text, noise_level=0.1):
         probability = noise_level
-        words = documents.split()
+        words = text.split()
         if len(words) <= 3:  # Don't delete if text is too short
-            return documents
+            return text
         
         modified_words = []
         

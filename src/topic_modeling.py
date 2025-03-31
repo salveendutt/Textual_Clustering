@@ -109,11 +109,9 @@ class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
         Returns:
             Dictionary of DataFrames with results for each dataset
         """
-        # results_df = pd.DataFrame()
         results_df = pd.DataFrame()
         # Check input format
         if not isinstance(documents_dict, dict):
-            # assume it's a single dataset
             documents = documents_dict
             documents_dict = {'default': (documents, true_labels)}
         
@@ -126,23 +124,41 @@ class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
                     eval_results = pipeline.evaluate(documents, true_labels)
                     eval_results['Model'] = name
                     eval_results['Dataset'] = dataset_name
+                    eval_results['Noise'] = 'None'
 
                     if results_df.empty:
                         results_df = pd.DataFrame([eval_results])  
                     else:
                         new_df = pd.DataFrame([eval_results])
-                        
                         # Explicitly cast columns to match dtypes in results_df
-                        for col in results_df.columns:
-                            if col in new_df.columns:
-                                new_df[col] = new_df[col].astype(results_df[col].dtype)
-                        
+                        new_df = new_df.astype({col: results_df[col].dtype for col in results_df.columns if col in new_df.columns})
+
                         results_df = pd.concat([results_df, new_df], ignore_index=True)
+
+                    if noise_strategies is None:
+                        continue
+
+                    for noise_strategy in noise_strategies:
+
+                        noisy_documents = noise_strategy.apply(documents)
+                        eval_results = pipeline.evaluate(noisy_documents, true_labels)
+                        eval_results['Model'] = name
+                        eval_results['Dataset'] = dataset_name
+                        eval_results['Noise'] = noise_strategy.__class__.__name__
+
+                        if results_df.empty:
+                            results_df = pd.DataFrame([eval_results])  
+                        else:
+                            new_df = pd.DataFrame([eval_results])
+                            # Explicitly cast columns to match dtypes in results_df
+                            new_df = new_df.astype({col: results_df[col].dtype for col in results_df.columns if col in new_df.columns})
+
+                            results_df = pd.concat([results_df, new_df], ignore_index=True)
 
                 except Exception as e:
                     print(f"  Error evaluating model {name}: {str(e)}")
                     
-        self.results = results_df
+        self.results = results_df[['Dataset', 'Noise', 'Model', 'ARI Score', 'Topics Coherence', 'Cosine Similarity', 'Reconstruction Error']].sort_values(by=['Dataset', 'Noise', 'Model'])
         return
 
         

@@ -150,7 +150,7 @@ class TopicModelPipeline:
         
         return {
             "ARI Score": ari_score,
-            "Topic Coherence": coherence_score,
+            "Topics Coherence": coherence_score,
             "Cosine Similarity": cosine_sim,
             "Reconstruction Error": reconstruction_error
         }
