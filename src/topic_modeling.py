@@ -2,7 +2,8 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 import pandas as pd
 from topic_modeling_models import *
-
+from tqdm.auto import tqdm
+from noise_strategy import NoNoise
 class IPipelineOrchestrator(ABC):
     @abstractmethod
     def add_model(self, model_type: str, config: Dict[str, Any], name: Optional[str] = None):
@@ -15,10 +16,7 @@ class IPipelineOrchestrator(ABC):
     @abstractmethod
     def evaluate(self, documents_dict, sort_by=None):
         pass
-
-    # @abstractmethod
-    # def print_topics(self, model_name=None, n_words=10):
-    #     pass
+    
 
 class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
     """
@@ -116,30 +114,13 @@ class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
             documents_dict = {'default': (documents, true_labels)}
         
         # Process each dataset
-        for dataset_name, (documents, true_labels) in documents_dict.items():            
-            print(f"Evaluating models on dataset: {dataset_name}")
-            
-            for name, pipeline in self.pipelines.items():
-                try:
-                    eval_results = pipeline.evaluate(documents, true_labels)
-                    eval_results['Model'] = name
-                    eval_results['Dataset'] = dataset_name
-                    eval_results['Noise'] = 'None'
+        for dataset_name, (documents, true_labels) in tqdm(documents_dict.items(), desc="Datasets", position=0):
+            for name, pipeline in tqdm(self.pipelines.items(), desc="Models", position=1, leave=False):
+                if noise_strategies == None:
+                    noise_strategies = [NoNoise()]
 
-                    if results_df.empty:
-                        results_df = pd.DataFrame([eval_results])  
-                    else:
-                        new_df = pd.DataFrame([eval_results])
-                        # Explicitly cast columns to match dtypes in results_df
-                        new_df = new_df.astype({col: results_df[col].dtype for col in results_df.columns if col in new_df.columns})
-
-                        results_df = pd.concat([results_df, new_df], ignore_index=True)
-
-                    if noise_strategies is None:
-                        continue
-
-                    for noise_strategy in noise_strategies:
-
+                for noise_strategy in tqdm(noise_strategies, desc="Noise Strategies", position=2, leave=False):
+                    try:
                         noisy_documents = noise_strategy.apply(documents)
                         eval_results = pipeline.evaluate(noisy_documents, true_labels)
                         eval_results['Model'] = name
@@ -155,37 +136,8 @@ class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
 
                             results_df = pd.concat([results_df, new_df], ignore_index=True)
 
-                except Exception as e:
-                    print(f"  Error evaluating model {name}: {str(e)}")
+                    except Exception as e:
+                        print(f"  Error evaluating model {name}: {str(e)}")
                     
         self.results = results_df[['Dataset', 'Noise', 'Model', 'ARI Score', 'Topics Coherence', 'Cosine Similarity', 'Reconstruction Error']].sort_values(by=['Dataset', 'Noise', 'Model'])
         return
-
-        
-    # def print_topics(self, model_name=None, n_words=10):
-    #     """
-    #     Print the topics discovered by a model.
-        
-    #     Args:
-    #         model_name: Name of the model (if None, prints for all models)
-    #         n_words: Number of words to show for each topic
-    #     """
-    #     if model_name is not None:
-    #         if model_name not in self.pipelines:
-    #             raise ValueError(f"Unknown model: {model_name}")
-                
-    #         pipeline = self.pipelines[model_name]
-    #         topics = pipeline.get_topics()
-            
-    #         print(f"Topics for model {model_name}:")
-    #         for i, topic in enumerate(topics):
-    #             print(f"Topic {i}: {', '.join(topic[:n_words])}")
-    #         print()
-    #     else:
-    #         for name, pipeline in self.pipelines.items():
-    #             topics = pipeline.get_topics()
-                
-    #             print(f"Topics for model {name}:")
-    #             for i, topic in enumerate(topics):
-    #                 print(f"Topic {i}: {', '.join(topic[:n_words])}")
-    #             print()
