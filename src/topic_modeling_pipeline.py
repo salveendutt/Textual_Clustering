@@ -1,23 +1,10 @@
-from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 import pandas as pd
 from topic_modeling_models import *
 from tqdm.auto import tqdm
 from noise_strategy import NoNoise
+from pipeline_orchestrator import IPipelineOrchestrator
 
-class IPipelineOrchestrator(ABC):
-    @abstractmethod
-    def add_model(self, model_type: str, config: Dict[str, Any], name: Optional[str] = None):
-        pass
-
-    @abstractmethod
-    def add_models_grid(self, model_types: List[str], param_grid: Dict[str, List[Any]]):
-        pass
-
-    @abstractmethod
-    def evaluate(self, documents_dict, sort_by=None):
-        pass
-    
 
 class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
     """
@@ -25,7 +12,7 @@ class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
     and evaluate their performance.
     """
     def __init__(self):
-        self.pipelines = {}
+        self.models = {}
         self.results = {}
         
     def add_model(self, model_type: str, config: Dict[str, Any], name: Optional[str] = None):
@@ -50,9 +37,6 @@ class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
         else:
             raise ValueError(f"Unknown model type: {model_type}")
         
-        # Create a pipeline for the model
-        pipeline = TopicModelPipeline(model)
-        
         # Generate a name if not provided
         if name is None:
             n_topics = config.get('n_topics', 5)
@@ -61,11 +45,11 @@ class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
         # Add counter suffix if name already exists
         base_name = name
         counter = 1
-        while name in self.pipelines:
+        while name in self.models:
             name = f"{base_name}_{counter}"
             counter += 1
             
-        self.pipelines[name] = pipeline
+        self.models[name] = model
         return name
     
     def add_models_grid(self, model_types: List[str], param_grid: Dict[str, List[Any]]):
@@ -116,14 +100,14 @@ class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
         
         # Process each dataset
         for dataset_name, (documents, true_labels) in tqdm(documents_dict.items(), desc="Datasets", position=0):
-            for name, pipeline in tqdm(self.pipelines.items(), desc="Models", position=1, leave=False):
+            for name, model in tqdm(self.models.items(), desc="Models", position=1, leave=False):
                 if noise_strategies == None:
                     noise_strategies = [NoNoise()]
 
                 for noise_strategy in tqdm(noise_strategies, desc="Noise Strategies", position=2, leave=False):
                     try:
                         noisy_documents = noise_strategy.apply(documents)
-                        eval_results = pipeline.evaluate(noisy_documents, true_labels)
+                        eval_results = model.evaluate(noisy_documents, true_labels)
                         eval_results['Model'] = name
                         eval_results['Dataset'] = dataset_name
                         eval_results['Noise'] = noise_strategy.__class__.__name__

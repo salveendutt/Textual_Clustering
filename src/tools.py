@@ -1,5 +1,23 @@
-from nltk.corpus import wordnet
+import re
 import nltk
+import string
+from nltk.corpus import wordnet
+from nltk.stem.snowball import SnowballStemmer
+from nltk.tokenize.casual import casual_tokenize
+from sklearn.feature_extraction.text import (ENGLISH_STOP_WORDS)
+
+PUNC = string.punctuation
+
+def process_text(text):
+    text = casual_tokenize(text)
+    text = [each.lower() for each in text]
+    text = [re.sub('[0-9]+', '', each) for each in text]
+    text = [SnowballStemmer('english').stem(each) for each in text]
+    text = [w for w in text if w not in PUNC]
+    text = [w for w in text if w not in ENGLISH_STOP_WORDS]
+    text = [each for each in text if len(each) > 1]
+    text = [each for each in text if ' ' not in each]
+    return text
 
 def get_synonyms(word):
     """Find synonyms for a given word."""

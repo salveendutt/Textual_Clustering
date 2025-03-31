@@ -13,15 +13,12 @@ class INoiseStrategy(ABC):
     def apply(self, documents):
         return documents.apply(self._apply_per_row)
 
-
 class NoNoise(INoiseStrategy):
     def _apply_per_row(self, text):
         pass
     
     def apply(self, documents):
         return documents
-    
-
 
 class AddRandomCharsNoise(INoiseStrategy):
     def _apply_per_row(self, text, noise_level=0.1):
@@ -74,7 +71,6 @@ class AddRandomWordsNoise(INoiseStrategy):
             
         return ' '.join(result)
     
-
 class DeleteRandomWordsNoise(INoiseStrategy):
     def _apply_per_row(self, text, noise_level=0.1):
         probability = noise_level
@@ -150,7 +146,6 @@ class ReplaceWithSynonymsNoise(INoiseStrategy):
                 words[idx] = random.choice(synonyms)
                 
         return ' '.join(words)
-
 
 class ReplaceWithAntonymsNoise(INoiseStrategy):
     def __init__(self):
