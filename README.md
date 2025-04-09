@@ -36,9 +36,9 @@ So, find a way to cluster me with others like me!"
 
 ```
 "Hey, I am a bunch of texts. 
-I like to be grouped with similar texts. 
-If you put me in the wrong group, I'll feel lost. 
-So, find a way to cluster me with others like me!"
+I like to be groupxed with similar texts. 
+If you pfut me in the wrowng group, I'll feel lost. 
+So, find a waky to cluster me with others like me!"
 ```
 
 ---
