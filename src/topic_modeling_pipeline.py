@@ -72,7 +72,7 @@ class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
         param_values = [param_grid[name] for name in param_names]
         
         for model_type in model_types:
-            for params in itertools.product(*param_values):
+            for params in param_values:
                 config = {name: value for name, value in zip(param_names, params)}
                 name = self.add_model(model_type, config)
                 added_models.append(name)
