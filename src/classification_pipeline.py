@@ -1,6 +1,6 @@
 from pipeline_orchestrator import IPipelineOrchestrator
 from typing import Any, Dict, List, Optional
-from supervised_classification_models import *
+from classification_models import *
 
 class SupervisedClassificationPipelineOrchestrator(IPipelineOrchestrator):
     def __init__(self) -> None:
