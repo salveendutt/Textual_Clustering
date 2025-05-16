@@ -80,18 +80,6 @@ class TopicModelingPipelineOrchestrator(IPipelineOrchestrator):
         return added_models
     
     def evaluate(self, documents_dict, noise_strategies=None):
-        """
-        Evaluate all models in the orchestrator on multiple datasets and store results.
-        
-        Args:
-            documents_dict: Dictionary where keys are dataset names and values are tuples of (documents, true_labels)
-                        Each documents should be a pandas Series/list of text documents
-                        true_labels can be None if not available
-            sort_by: Optional metric to sort results by
-                
-        Returns:
-            Dictionary of DataFrames with results for each dataset
-        """
         results_df = pd.DataFrame()
         # Check input format
         if not isinstance(documents_dict, dict):

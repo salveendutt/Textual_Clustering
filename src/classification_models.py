@@ -6,6 +6,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from tools import process_text
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
+
 class ISupervisedClasificationModel(ABC):
     @abstractmethod
     def __init__(self):
@@ -38,10 +39,6 @@ class ISupervisedClasificationModel(ABC):
         }
 
 
-        
-
-        
-
 class SVMModel(ISupervisedClasificationModel):
     def __init__(self):
         super().__init__()
@@ -55,7 +52,4 @@ class SVMModel(ISupervisedClasificationModel):
     def predict_classes(self, documents):
         return self.model.predict(self.vectorizer.fit_transform(documents))
     
-
-    
-
 
