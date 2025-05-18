@@ -1,14 +1,12 @@
 import numpy as np
 import pandas as pd
 from abc import ABC, abstractmethod
-from sklearn.svm import SVC
+from sklearn.svm import SVC, LinearSVC
 from sklearn.feature_extraction.text import CountVectorizer
 from tools import process_text
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from transformers import RobertaModel, RobertaTokenizer
 import torch
-
-import logging
 
 
 class IClasificationModel(ABC):
@@ -26,8 +24,7 @@ class IClasificationModel(ABC):
         pass
 
     def evaluate(self, documents, true_labels: pd.DataFrame=None):
-        documents_processed = documents.apply(process_text).tolist()
-        predictions = self.predict_classes(documents_processed)
+        predictions = self.predict_classes(documents)
         accuracy = accuracy_score(predictions, true_labels)
         f1 = f1_score(predictions, true_labels, average='weighted')
         precision = precision_score(predictions, true_labels, average='weighted')
@@ -53,10 +50,11 @@ class SVMModel(IClasificationModel):
         return self.model.fit(self.term_matrix, train_data_y)
     
     def predict_classes(self, documents):
-        return self.model.predict(self.vectorizer.transform(documents))
+        documents_processed = documents.apply(process_text).tolist()
+        return self.model.predict(self.vectorizer.transform(documents_processed))
     
 class SVMRobertaModel(IClasificationModel):
-    def __init__(self, model_name='distilroberta-base', max_length=512, batch_size=16):
+    def __init__(self, model_name='distilroberta-base', max_length=1024, batch_size=16):
         super().__init__()
         self.model_name = model_name
         self.max_length = max_length
@@ -69,8 +67,9 @@ class SVMRobertaModel(IClasificationModel):
         self.roberta_model = RobertaModel.from_pretrained(self.model_name).to(self.device)
         
         # Initialize SVM classifier
-        self.model = SVC()
+        self.model = LinearSVC(C=1.0, max_iter=10000)
         
+
     def _get_roberta_embeddings(self, texts):
         """
         Generate embeddings for texts using RoBERTa without batch processing
@@ -96,12 +95,11 @@ class SVMRobertaModel(IClasificationModel):
         return np.array(embeddings)
     
     def fit_model(self, train_data_X, train_data_y):
-        documents_processed = train_data_X.apply(process_text).tolist()
-        logger = logging.getLogger(__name__)
-        logger.info(f"Processing {len(documents_processed)} documents for RoBERTa embeddings.")
+        documents_processed = train_data_X.tolist()
         self.embeddings = self._get_roberta_embeddings(documents_processed)
         return self.model.fit(self.embeddings, train_data_y)
     
     def predict_classes(self, documents):
-        embeddings = self._get_roberta_embeddings(documents)
+        documents_processed = documents.tolist()
+        embeddings = self._get_roberta_embeddings(documents_processed)
         return self.model.predict(embeddings)
