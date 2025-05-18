@@ -33,6 +33,16 @@ class ClassificationPipelineOrchestrator(IPipelineOrchestrator):
             model = SVMModel()
         elif model_type == 'SVMRoberta':
             model = SVMRobertaModel()
+        elif model_type == 'XGBoost':
+            model = XGBoostModel()
+        elif model_type == 'XGBoostRoberta':
+            model = XGBoostRobertaModel()
+        elif model_type == 'RandomForest':
+            model = RandomForestModel()
+        elif model_type == 'LightGBM':
+            model = LightGBMModel()
+        elif model_type == 'LightGBMRoberta':
+            model = LightGBMRobertaModel()
         else:
             raise ValueError(f"Unknown model type: {model_type}")
         
@@ -91,8 +101,6 @@ class ClassificationPipelineOrchestrator(IPipelineOrchestrator):
             documents, true_labels = documents_dict
             documents_dict = {'default': (documents, true_labels)}
         
-        logger = logging.getLogger(__name__)
-
         # Process each dataset
         for dataset_name, (documents, true_labels) in tqdm(documents_dict.items(), desc="Datasets", position=0):
             for name, model in tqdm(self.models.items(), desc="Models", position=1, leave=False):
