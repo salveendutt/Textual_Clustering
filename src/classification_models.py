@@ -10,6 +10,9 @@ from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from transformers import RobertaModel, RobertaTokenizer
 import torch
+from flair.models import TARSClassifier
+from flair.data import Sentence
+from typing import List, Optional, Union
 
 
 class IClasificationModel(ABC):
@@ -377,3 +380,30 @@ class LightGBMRobertaModel(IClasificationModel):
             inv = {v: k for k, v in self.label_encoder.items()}
             return np.array([inv[p] for p in preds])
         return preds
+
+class TARSZeroShotModel(IClasificationModel):
+    def __init__(self, model_name: str = 'tars-base'):
+        super().__init__()
+        self.model = TARSClassifier.load(model_name)
+        self.model.add_and_switch_to_new_task("ZeroShot", label_dictionary=['World', 'Sports', 'Business', 'Science'], label_type="classification")
+        
+    def fit_model(self, train_data_X, train_data_y):
+        pass
+        
+    def predict_classes(self, documents):
+            
+        predictions = []
+        
+        for doc in documents.tolist():
+            sentence = Sentence(doc)
+            self.model.predict(sentence)
+            if sentence.labels:
+                prediction = sentence.labels[0].value
+            else:
+                prediction = "Unknown"
+                
+            predictions.append(prediction)
+        text_to_class_mapping = {'World': 1, 'Sports': 2, 'Business': 3, 'Science': 4}
+        preds_mapped = [text_to_class_mapping.get(pred, 0) for pred in predictions]
+        return np.array(preds_mapped)
+    
