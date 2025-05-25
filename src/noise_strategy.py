@@ -21,7 +21,7 @@ class NoNoise(INoiseStrategy):
         return documents
 
 class AddRandomCharsNoise(INoiseStrategy):
-    def _apply_per_row(self, text, noise_level=0.3):
+    def _apply_per_row(self, text, noise_level=0.2):
         probability = noise_level
         words = text.split()
         modified_words = []
@@ -53,7 +53,7 @@ class AddRandomWordsNoise(INoiseStrategy):
         if not self.single_word_list:
             raise ValueError("No valid single words found in WordNet")
     
-    def _apply_per_row(self, text, noise_level=0.3):
+    def _apply_per_row(self, text, noise_level=0.2):
         words = text.split()
         result = list(words)  # Copy words list
         
@@ -72,7 +72,7 @@ class AddRandomWordsNoise(INoiseStrategy):
         return ' '.join(result)
     
 class DeleteRandomWordsNoise(INoiseStrategy):
-    def _apply_per_row(self, text, noise_level=0.3):
+    def _apply_per_row(self, text, noise_level=0.2):
         probability = noise_level
         words = text.split()
         if len(words) <= 3:  # Don't delete if text is too short
