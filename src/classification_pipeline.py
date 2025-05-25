@@ -45,8 +45,8 @@ class ClassificationPipelineOrchestrator(IPipelineOrchestrator):
             model = LightGBMRobertaModel()
         elif model_type == 'TARSZeroShot':
             model = TARSZeroShotModel()
-        elif model_type == 'TARSFewShot':
-            model = TARSFewShotModel()
+        elif model_type == 'LLMClassifier':
+            model = LLMClassifierModel()
         else:
             raise ValueError(f"Unknown model type: {model_type}")
         
@@ -96,6 +96,12 @@ class ClassificationPipelineOrchestrator(IPipelineOrchestrator):
 
     def evaluate(self, documents_dict, noise_strategies=None):
         pass
+    
+    def set_topics(self, dataset_name):
+        if dataset_name.startswith('AG'):
+            self.models['LLMClassifier'].set_topics(['World', 'Sports', 'Business', 'Science'])
+        elif dataset_name.startswith('BBC'):
+            self.models['LLMClassifier'].set_topics(['sport', 'business', 'politics', 'entertainment', 'tech'])
 
     def evaluate_with_training(self, training_data, documents_dict, noise_strategies=None):
         results_df = pd.DataFrame()
@@ -117,8 +123,11 @@ class ClassificationPipelineOrchestrator(IPipelineOrchestrator):
                         train_x, train_y = training_data[dataset_name]
                         model.fit_model(train_x, train_y)
                         
-                        eval_results = model.evaluate(noisy_documents, true_labels)
-                        
+                        if name == 'LLMClassifier':
+                            self.set_topics(dataset_name)
+                        eval_results, df = model.evaluate(noisy_documents, true_labels)
+                        if name == 'LLMClassifier':
+                            df.to_csv(f'../outputs/{name}_assigned.csv', index=False)
                         # Add metadata
                         eval_results['Model'] = name
                         eval_results['Dataset'] = dataset_name

@@ -13,7 +13,10 @@ import torch
 from flair.models import TARSClassifier
 from flair.data import Sentence
 from typing import List, Optional, Union
+from langchain_ollama import OllamaLLM
+import logging
 
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -24,7 +27,6 @@ class IClasificationModel(ABC):
     @abstractmethod
     def __init__(self):
         self.assigned_topics = None
-        self.topic_distributions = None
 
     @abstractmethod
     def predict_classes(self, documents): 
@@ -36,6 +38,7 @@ class IClasificationModel(ABC):
 
     def evaluate(self, documents, true_labels: pd.DataFrame=None):
         predictions = self.predict_classes(documents)
+        df = pd.DataFrame({'Documents': documents, 'Predictions': predictions, 'True Labels': true_labels})
         accuracy = accuracy_score(predictions, true_labels)
         f1 = f1_score(predictions, true_labels, average='weighted')
         precision = precision_score(predictions, true_labels, average='weighted')
@@ -46,7 +49,7 @@ class IClasificationModel(ABC):
             'F1 Score': f1,
             'Precision': precision,
             'Recall': recall
-        }
+        }, df
 
 
 class SVMModel(IClasificationModel):
@@ -411,4 +414,41 @@ class TARSZeroShotModel(IClasificationModel):
         text_to_class_mapping = {'World': 1, 'Sports': 2, 'Business': 3, 'Science': 4}
         preds_mapped = [text_to_class_mapping.get(pred, 0) for pred in predictions]
         return np.array(preds_mapped)
+
+class LLMClassifierModel(IClasificationModel):
+    def __init__(self, model_name: str = 'gemma3'):
+        self.model = OllamaLLM(model=model_name)
+        self.topics = ['World', 'Sports', 'Business', 'Science']
+
+    def fit_model(self, train_data_X, train_data_y):
+        pass
     
+    def set_topics(self, topics: List[str]):
+        """
+        Set the topics for classification.
+        
+        Args:
+            topics: List of topic names to classify the documents into.
+        """
+        self.topics = topics
+
+    def generate_prompt(self, document):
+        return f'''You are provided with news and helping to classify them based on the topics.
+Please assign the news to the topics provided. Return only the name of the topic for the respective news.
+News can be found in tripletick block: ```{document}```
+Topics to choose from: {self.topics}
+Please return ONLY the topic name. DO NOT OUTPUT any additional text, quotes, or formatting.'''
+
+    def predict_classes(self, documents):
+            
+        predictions = []
+        
+        for doc in documents.tolist():
+            prompt = self.generate_prompt(doc)
+            response = self.model.invoke(prompt)
+            response = response.strip()
+            prediction = response.replace('``', '').replace('"', '').replace("'", "")
+            predictions.append(prediction)
+        text_to_class_mapping = {'World': 1, 'Sports': 2, 'Business': 3, 'Science': 4}
+        preds_mapped = [text_to_class_mapping.get(pred, -1) for pred in predictions]
+        return np.array(preds_mapped)
