@@ -45,6 +45,8 @@ class ClassificationPipelineOrchestrator(IPipelineOrchestrator):
             model = LightGBMRobertaModel()
         elif model_type == 'TARSZeroShot':
             model = TARSZeroShotModel()
+        elif model_type == 'TARSFewShot':
+            model = TARSFewShotModel()
         else:
             raise ValueError(f"Unknown model type: {model_type}")
         

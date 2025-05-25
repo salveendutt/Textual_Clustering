@@ -15,6 +15,11 @@ from flair.data import Sentence
 from typing import List, Optional, Union
 
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+
+
 class IClasificationModel(ABC):
     @abstractmethod
     def __init__(self):
