@@ -1,0 +1,8 @@
+Dataset,Noise,Model,Accuracy,F1 Score,Precision,Recall
+AG News LLM labels,AddRandomCharsNoise,SVMRoberta,0.72,0.75,0.87,0.72
+AG News LLM labels,AddRandomWordsNoise,SVMRoberta,0.72,0.75,0.86,0.72
+AG News LLM labels,DeleteRandomWordsNoise,SVMRoberta,0.72,0.75,0.87,0.72
+AG News LLM labels,NoNoise,SVMRoberta,0.73,0.77,0.88,0.73
+AG News LLM labels,ReplaceWithAntonymsNoise,SVMRoberta,0.73,0.77,0.88,0.73
+AG News LLM labels,ReplaceWithSynonymsNoise,SVMRoberta,0.73,0.77,0.88,0.73
+AG News LLM labels,ShuffleSentencesNoise,SVMRoberta,0.73,0.77,0.88,0.73

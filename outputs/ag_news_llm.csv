@@ -1,0 +1,10 @@
+,Accuracy,F1 Score,Precision,Recall
+Dataset,AG News Full,AG News Full,AG News Full,AG News Full
+Noise,,,,
+AddRandomCharsNoise,0.73,0.76,0.86,0.73
+AddRandomWordsNoise,0.74,0.75,0.82,0.74
+DeleteRandomWordsNoise,0.73,0.76,0.85,0.73
+NoNoise,0.73,0.75,0.85,0.73
+ReplaceWithAntonymsNoise,0.74,0.76,0.85,0.74
+ReplaceWithSynonymsNoise,0.74,0.76,0.85,0.74
+ShuffleSentencesNoise,0.73,0.76,0.85,0.73

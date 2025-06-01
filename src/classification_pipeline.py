@@ -99,9 +99,31 @@ class ClassificationPipelineOrchestrator(IPipelineOrchestrator):
     
     def set_topics(self, dataset_name):
         if dataset_name.startswith('AG'):
-            self.models['LLMClassifier'].set_topics(['World', 'Sports', 'Business', 'Science'])
+            if 'LLMClassifier' in self.models:
+                self.models['LLMClassifier'].set_topics(['World', 'Sports', 'Business', 'Science'])
+                self.models['LLMClassifier'].set_topics_mapping({'World': 1, 'Sports': 2, 'Business': 3, 'Science': 4})
+            if 'TARSZeroShot' in self.models:
+                self.models['TARSZeroShot'].set_topics(['World', 'Sports', 'Business', 'Science'])
+                self.models['TARSZeroShot'].set_topics_mapping({'World': 1, 'Sports': 2, 'Business': 3, 'Science': 4})
         elif dataset_name.startswith('BBC'):
-            self.models['LLMClassifier'].set_topics(['sport', 'business', 'politics', 'entertainment', 'tech'])
+            if 'LLMClassifier' in self.models:
+                self.models['LLMClassifier'].set_topics(['sport', 'business', 'politics', 'entertainment', 'tech'])
+                self.models['LLMClassifier'].set_topics_mapping({
+                    'business': 1,
+                    'tech': 2,
+                    'entertainment': 3,
+                    'politics': 4,
+                    'sport': 5
+                })
+            if 'TARSZeroShot' in self.models:
+                self.models['TARSZeroShot'].set_topics(['sport', 'business', 'politics', 'entertainment', 'tech'])
+                self.models['TARSZeroShot'].set_topics_mapping({
+                    'business': 1,
+                    'tech': 2,
+                    'entertainment': 3,
+                    'politics': 4,
+                    'sport': 5
+                })
 
     def evaluate_with_training(self, training_data, documents_dict, noise_strategies=None):
         results_df = pd.DataFrame()
@@ -113,6 +135,7 @@ class ClassificationPipelineOrchestrator(IPipelineOrchestrator):
         
         # Process each dataset
         for dataset_name, (documents, true_labels) in tqdm(documents_dict.items(), desc="Datasets", position=0):
+            logging.info(f"Processing dataset: {dataset_name}")
             for name, model in tqdm(self.models.items(), desc="Models", position=1, leave=False):
                 if noise_strategies is None:
                     noise_strategies = [NoNoise()]
@@ -123,9 +146,10 @@ class ClassificationPipelineOrchestrator(IPipelineOrchestrator):
                         train_x, train_y = training_data[dataset_name]
                         model.fit_model(train_x, train_y)
                         
-                        if name == 'LLMClassifier':
+                        if name == 'LLMClassifier' or name == 'TARSZeroShot':
                             self.set_topics(dataset_name)
                         eval_results, df = model.evaluate(noisy_documents, true_labels)
+
                         if name == 'LLMClassifier':
                             df.to_csv(f'../outputs/{name}_assigned.csv', index=False)
                         # Add metadata

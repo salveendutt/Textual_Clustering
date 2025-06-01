@@ -21,6 +21,7 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+from tqdm.auto import tqdm
 
 
 class IClasificationModel(ABC):
@@ -69,7 +70,7 @@ class SVMModel(IClasificationModel):
     
 
 class SVMRobertaModel(IClasificationModel):
-    def __init__(self, model_name='distilroberta-base', max_length=1024, batch_size=16):
+    def __init__(self, model_name='distilroberta-base', max_length=None, batch_size=8):
         super().__init__()
         self.model_name = model_name
         self.max_length = max_length
@@ -393,15 +394,36 @@ class TARSZeroShotModel(IClasificationModel):
     def __init__(self, model_name: str = 'tars-base'):
         super().__init__()
         self.model = TARSClassifier.load(model_name)
-        self.model.add_and_switch_to_new_task("ZeroShot", label_dictionary=['World', 'Sports', 'Business', 'Science'], label_type="classification")
         
+        self.topics = None
+        self.topics_mapping = None
+
     def fit_model(self, train_data_X, train_data_y):
         pass
+
+    def set_topics(self, topics: List[str]):
+        """
+        Set the topics for classification.
         
+        Args:
+            topics: List of topic names to classify the documents into.
+        """
+        self.topics = topics
+
+    def set_topics_mapping(self, mapping: List[str]):
+        """
+        Set the topics for classification.
+        
+        Args:
+            topics: List of topic names to classify the documents into.
+        """
+        self.topics_mapping = mapping
+
     def predict_classes(self, documents):
             
         predictions = []
         
+        self.model.add_and_switch_to_new_task("ZeroShot", label_dictionary=self.topics, label_type="classification")
         for doc in documents.tolist():
             sentence = Sentence(doc)
             self.model.predict(sentence)
@@ -411,15 +433,14 @@ class TARSZeroShotModel(IClasificationModel):
                 prediction = "Unknown"
                 
             predictions.append(prediction)
-        text_to_class_mapping = {'World': 1, 'Sports': 2, 'Business': 3, 'Science': 4}
-        preds_mapped = [text_to_class_mapping.get(pred, 0) for pred in predictions]
+        preds_mapped = [self.topics_mapping.get(pred, 0) for pred in predictions]
         return np.array(preds_mapped)
 
 class LLMClassifierModel(IClasificationModel):
     def __init__(self, model_name: str = 'gemma3'):
         self.model = OllamaLLM(model=model_name)
-        self.topics = ['World', 'Sports', 'Business', 'Science']
-
+        self.topics = None
+        self.topics_mapping = None
     def fit_model(self, train_data_X, train_data_y):
         pass
     
@@ -432,7 +453,17 @@ class LLMClassifierModel(IClasificationModel):
         """
         self.topics = topics
 
+    def set_topics_mapping(self, mapping: List[str]):
+        """
+        Set the topics for classification.
+        
+        Args:
+            topics: List of topic names to classify the documents into.
+        """
+        self.topics_mapping = mapping
+
     def generate_prompt(self, document):
+
         return f'''You are provided with news and helping to classify them based on the topics.
 Please assign the news to the topics provided. Return only the name of the topic for the respective news.
 News can be found in tripletick block: ```{document}```
@@ -443,12 +474,13 @@ Please return ONLY the topic name. DO NOT OUTPUT any additional text, quotes, or
             
         predictions = []
         
-        for doc in documents.tolist():
+        for doc in tqdm(documents.tolist(), desc="Classifying with LLM"):
             prompt = self.generate_prompt(doc)
             response = self.model.invoke(prompt)
             response = response.strip()
             prediction = response.replace('``', '').replace('"', '').replace("'", "")
             predictions.append(prediction)
-        text_to_class_mapping = {'World': 1, 'Sports': 2, 'Business': 3, 'Science': 4}
+        
+        text_to_class_mapping = self.topics_mapping
         preds_mapped = [text_to_class_mapping.get(pred, -1) for pred in predictions]
         return np.array(preds_mapped)
