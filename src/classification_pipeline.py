@@ -152,8 +152,8 @@ class ClassificationPipelineOrchestrator(IPipelineOrchestrator):
                             self.set_topics(dataset_name)
                         eval_results, df = model.evaluate(noisy_documents, true_labels)
 
-                        if name == 'LLMClassifier':
-                            df.to_csv(f'../outputs/{name}_assigned.csv', index=False)
+                        # if name == 'LLMClassifier':
+                        #     df.to_csv(f'../outputs/{name}_assigned.csv', index=False)
                         # Add metadata
                         eval_results['Model'] = name
                         eval_results['Dataset'] = dataset_name
