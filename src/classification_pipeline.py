@@ -39,6 +39,8 @@ class ClassificationPipelineOrchestrator(IPipelineOrchestrator):
             model = XGBoostRobertaModel()
         elif model_type == 'RandomForest':
             model = RandomForestModel()
+        elif model_type == 'RandomForestRoberta':
+            model = RandomForestRobertaModel()
         elif model_type == 'LightGBM':
             model = LightGBMModel()
         elif model_type == 'LightGBMRoberta':

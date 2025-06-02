@@ -183,8 +183,127 @@ class RandomForestModel(IClasificationModel):
         return self.model.predict(self.vectorizer.transform(documents_processed))
 
 
+class RandomForestRobertaModel(IClasificationModel):
+    def __init__(self, 
+                 model_name='distilroberta-base', 
+                 max_length=None, 
+                 batch_size=16,
+                 n_estimators=100, 
+                 max_depth=None,
+                 min_samples_split=2,
+                 min_samples_leaf=1,
+                 random_state=42):
+        super().__init__()
+        self.model_name = model_name
+        self.max_length = max_length
+        self.batch_size = batch_size
+        
+        # Device selection following the pattern from other RoBERTa models
+        self.device = torch.device('cuda' if torch.cuda.is_available()
+                                   else 'mps' if torch.backends.mps.is_available()
+                                   else 'cpu')
+        
+        # Load RoBERTa tokenizer and model
+        self.tokenizer = RobertaTokenizer.from_pretrained(self.model_name)
+        self.roberta_model = RobertaModel.from_pretrained(self.model_name).to(self.device)
+        
+        # Initialize Random Forest classifier
+        self.model = RandomForestClassifier(
+            n_estimators=n_estimators,
+            max_depth=max_depth,
+            min_samples_split=min_samples_split,
+            min_samples_leaf=min_samples_leaf,
+            random_state=random_state,
+            n_jobs=-1  # Use all available cores
+        )
+        
+        # Label encoding for non-zero based labels
+        self.label_encoder = None
+        self.original_classes = None
+    
+    def _get_roberta_embeddings(self, texts):
+        """
+        Generate embeddings for texts using RoBERTa
+        """
+        embeddings = []
+        
+        for text in texts:
+            # Tokenize a single text
+            encoded_input = self.tokenizer(
+                text,
+                padding='max_length',
+                truncation=True,
+                max_length=self.max_length,
+                return_tensors='pt'
+            ).to(self.device)
+            
+            with torch.no_grad():
+                outputs = self.roberta_model(**encoded_input)
+            
+            # Use the [CLS] token embedding (first token)
+            embedding = outputs.last_hidden_state[:, 0, :].cpu().numpy()[0]
+            embeddings.append(embedding)
+        
+        return np.array(embeddings)
+    
+    def fit_model(self, train_data_X, train_data_y):
+        # Convert to list if pandas Series
+        texts = train_data_X.tolist()
+        
+        # Get RoBERTa embeddings
+        X_embeddings = self._get_roberta_embeddings(texts)
+        
+        # Handle non-zero based labels (following the pattern from XGBoost and LightGBM models)
+        self.original_classes = np.unique(train_data_y)
+        if np.min(self.original_classes) > 0:
+            # Create mapping from original labels to zero-based indices
+            self.label_encoder = {original: idx for idx, original in enumerate(self.original_classes)}
+            # Transform labels to zero-based
+            transformed_y = np.array([self.label_encoder[label] for label in train_data_y])
+            return self.model.fit(X_embeddings, transformed_y)
+        else:
+            # Labels are already zero-based
+            y = train_data_y.values if hasattr(train_data_y, 'values') else train_data_y
+            return self.model.fit(X_embeddings, y)
+    
+    def predict_classes(self, documents):
+        # Convert to list if pandas Series
+        texts = documents.tolist()
+        
+        # Get RoBERTa embeddings
+        X_embeddings = self._get_roberta_embeddings(texts)
+        
+        # Make predictions
+        predictions = self.model.predict(X_embeddings)
+        
+        # If we transformed the labels for training, convert predictions back to original labels
+        if self.label_encoder is not None:
+            # Create reverse mapping from indices to original labels
+            reverse_encoder = {idx: original for original, idx in self.label_encoder.items()}
+            return np.array([reverse_encoder[pred] for pred in predictions])
+        else:
+            return predictions
+    
+    def predict_proba(self, documents):
+        """
+        Get prediction probabilities (useful for Random Forest)
+        """
+        texts = documents.tolist()
+        X_embeddings = self._get_roberta_embeddings(texts)
+        return self.model.predict_proba(X_embeddings)
+    
+    def get_feature_importance(self):
+        """
+        Get feature importance from the Random Forest model
+        """
+        if hasattr(self.model, 'feature_importances_'):
+            return self.model.feature_importances_
+        else:
+            raise ValueError("Model must be fitted before getting feature importance")
+
+
 class LightGBMModel(IClasificationModel):
-    def __init__(self, n_estimators=100, learning_rate=0.1, max_depth=-1, min_child_samples=20, 
+    def __init__(self, n_estimators=100, learning_rate=0.1, max_depth=5, min_child_samples=20, 
                  num_leaves=31, min_data_in_leaf=20, use_tfidf=True, verbose=-1):
         super().__init__()
         self.vectorizer = TfidfVectorizer(stop_words='english', preprocessor=' '.join)
@@ -193,9 +312,9 @@ class LightGBMModel(IClasificationModel):
             n_estimators=n_estimators,
             learning_rate=learning_rate,
             max_depth=max_depth,
-            min_child_samples=min_child_samples,
-            num_leaves=num_leaves,
-            min_data_in_leaf=min_data_in_leaf,
+            # min_child_samples=min_child_samples,
+            # num_leaves=num_leaves,
+            # min_data_in_leaf=min_data_in_leaf,
             random_state=42,
             verbose=verbose,
             # Parameters to help with sparse data
@@ -221,21 +340,21 @@ class LightGBMModel(IClasificationModel):
             
             # LightGBM works better with dense arrays for sparse data
             return self.model.fit(
-                self.term_matrix.toarray(), 
+                self.term_matrix,
                 transformed_y,
                 # Add categorical feature info explicitly
                 categorical_feature='auto'
             )
         else:
             return self.model.fit(
-                self.term_matrix.toarray(), 
+                self.term_matrix,
                 train_data_y,
                 categorical_feature='auto'
             )
     
     def predict_classes(self, documents):
         documents_processed = documents.apply(process_text).tolist()
-        predictions = self.model.predict(self.vectorizer.transform(documents_processed).toarray())
+        predictions = self.model.predict(self.vectorizer.transform(documents_processed))
         
         # If we transformed the labels for training, convert predictions back to original labels
         if self.label_encoder is not None:
