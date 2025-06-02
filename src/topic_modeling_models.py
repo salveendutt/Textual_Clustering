@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from gensim.corpora.dictionary import Dictionary
 from gensim.models.coherencemodel import CoherenceModel
 from sklearn.decomposition import (LatentDirichletAllocation, NMF, TruncatedSVD)
-from sklearn.feature_extraction.text import (CountVectorizer, TfidfVectorizer)
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import adjusted_rand_score
 from sklearn.metrics.pairwise import cosine_similarity
 from tools import process_text
@@ -74,7 +74,7 @@ class LDAModel(ITopicModel):
     def __init__(self, n_topics=5):
         super().__init__()
         self.n_topics = n_topics
-        self.vectorizer = CountVectorizer(stop_words='english', preprocessor=' '.join)
+        self.vectorizer = TfidfVectorizer(stop_words='english', preprocessor=' '.join)
         self.model = LatentDirichletAllocation(n_components=n_topics, random_state=42)
 
     def fit_transform(self, documents):
