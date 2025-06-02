@@ -15,6 +15,7 @@ from flair.data import Sentence
 from typing import List, Optional, Union
 from langchain_ollama import OllamaLLM
 import logging
+import uuid
 
 logging.getLogger("httpx").setLevel(logging.WARNING)
 
@@ -520,6 +521,12 @@ class TARSZeroShotModel(IClasificationModel):
     def fit_model(self, train_data_X, train_data_y):
         pass
 
+    def _generate_unique_task_name(self):
+        """Generate a unique task name based on current topics
+        If this step is ommited then the model will not use new topics and reuse the old ones."""
+        # Option 1: Use UUID for completely unique names
+        return f"ZeroShot_{uuid.uuid4().hex[:8]}"
+
     def set_topics(self, topics: List[str]):
         """
         Set the topics for classification.
@@ -542,7 +549,7 @@ class TARSZeroShotModel(IClasificationModel):
             
         predictions = []
         
-        self.model.add_and_switch_to_new_task("ZeroShot", label_dictionary=self.topics, label_type="classification")
+        self.model.add_and_switch_to_new_task(self._generate_unique_task_name(), label_dictionary=self.topics, label_type="classification")
         for doc in documents.tolist():
             sentence = Sentence(doc)
             self.model.predict(sentence)

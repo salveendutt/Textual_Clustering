@@ -1,0 +1,7 @@
+Dataset,Noise,Model,Accuracy,F1 Score,Precision,Recall
+AG News Full,NoNoise,LLMClassifier,0.6,0.5,0.47,0.6
+AG News Full,NoNoise,TARSZeroShot,0.4,0.3,0.27,0.4
+AG News LLM labels,NoNoise,LLMClassifier,0.6,0.5,0.47,0.6
+AG News LLM labels,NoNoise,TARSZeroShot,0.4,0.3,0.27,0.4
+BBC News Full,NoNoise,LLMClassifier,1.0,1.0,1.0,1.0
+BBC News Full,NoNoise,TARSZeroShot,1.0,1.0,1.0,1.0

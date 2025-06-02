@@ -8,6 +8,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import adjusted_rand_score
 from sklearn.metrics.pairwise import cosine_similarity
 from tools import process_text
+import logging
+
+# Suppress Gensim INFO messages
+logging.getLogger('gensim').setLevel(logging.WARNING)
 
 # Interface for Topic Models
 class ITopicModel(ABC):

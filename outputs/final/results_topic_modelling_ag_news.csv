@@ -1,0 +1,7 @@
+Dataset,Noise,Model,ARI Score,Topics Coherence,Cosine Similarity,Reconstruction Error
+AG News Full,NoNoise,LDA_4,0.41,0.94,0.36,
+AG News Full,NoNoise,LSI_4,0.41,0.82,0.28,
+AG News Full,NoNoise,NMF_4,0.41,0.9,0.28,0.9883731094149502
+AG News LLM labels,NoNoise,LDA_4,0.41,0.94,0.36,
+AG News LLM labels,NoNoise,LSI_4,0.41,0.82,0.28,
+AG News LLM labels,NoNoise,NMF_4,0.41,0.9,0.28,0.9883731094149502

@@ -10,7 +10,7 @@ logging.basicConfig(
     format='%(asctime)s [%(levelname)s] %(name)s: %(message)s',
     handlers=[
         logging.FileHandler("app.log"),
-        logging.StreamHandler()  # Optional: also log to console
+        logging.StreamHandler()
     ]
 )
 
@@ -172,5 +172,3 @@ class ClassificationPipelineOrchestrator(IPipelineOrchestrator):
         # Store and return results - updated to use classification metrics
         self.results = results_df[['Dataset', 'Noise', 'Model', 'Accuracy', 'F1 Score', 'Precision', 'Recall']].sort_values(by=['Dataset', 'Noise', 'Model'])
         return self.results
-
-        
