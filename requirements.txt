@@ -1,5 +1,16 @@
 numpy
+pandas
 scikit-learn
 pandas
 gensim
 nltk
+langchain_ollama
+tqdm
+xgboost
+lightgbm
+transformers
+torch
+flair
+nltk
+tqdm
+gensim

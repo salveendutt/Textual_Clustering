@@ -110,21 +110,56 @@ class ClassificationPipelineOrchestrator(IPipelineOrchestrator):
         elif dataset_name.startswith('BBC'):
             if 'LLMClassifier' in self.models:
                 self.models['LLMClassifier'].set_topics(['sport', 'business', 'politics', 'entertainment', 'tech'])
-                self.models['LLMClassifier'].set_topics_mapping({
-                    'business': 1,
-                    'tech': 2,
-                    'entertainment': 3,
-                    'politics': 4,
-                    'sport': 5
-                })
+                self.models['LLMClassifier'].set_topics_mapping({'business': 1,'tech': 2,'entertainment': 3,'politics': 4,'sport': 5})
             if 'TARSZeroShot' in self.models:
                 self.models['TARSZeroShot'].set_topics(['sport', 'business', 'politics', 'entertainment', 'tech'])
-                self.models['TARSZeroShot'].set_topics_mapping({
-                    'business': 1,
-                    'tech': 2,
-                    'entertainment': 3,
-                    'politics': 4,
-                    'sport': 5
+                self.models['TARSZeroShot'].set_topics_mapping({'business': 1,'tech': 2,'entertainment': 3,'politics': 4,'sport': 5})
+        elif dataset_name.startswith('20'):
+            if 'LLMClassifier' in self.models:
+                self.models['LLMClassifier'].set_topics(['rec.sport.hockey', 'sci.space', 'comp.graphics', 'comp.sys.mac.hardware', 'talk.politics.guns', 'sci.med', 'misc.forsale', 'alt.atheism', 'talk.politics.misc', 'comp.os.ms-windows.misc', 'comp.sys.ibm.pc.hardware', 'sci.crypt', 'talk.religion.misc', 'comp.windows.x', 'rec.sport.baseball', 'talk.politics.mideast', 'rec.autos', 'rec.motorcycles', 'sci.electronics', 'soc.religion.christian'])
+                self.models['LLMClassifier'].set_topics_mapping({'alt.atheism': 1,
+                    'comp.graphics': 2,
+                    'comp.os.ms-windows.misc': 3,
+                    'comp.sys.ibm.pc.hardware': 4,
+                    'comp.sys.mac.hardware': 5,
+                    'comp.windows.x': 6,
+                    'misc.forsale': 7,
+                    'rec.autos': 8,
+                    'rec.motorcycles': 9,
+                    'rec.sport.baseball': 10,
+                    'rec.sport.hockey': 11,
+                    'sci.crypt': 12,
+                    'sci.electronics': 13,
+                    'sci.med': 14,
+                    'sci.space': 15,
+                    'soc.religion.christian': 16,
+                    'talk.politics.guns': 17,
+                    'talk.politics.mideast': 18,
+                    'talk.politics.misc': 19,
+                    'talk.religion.misc': 20
+                })
+            if 'TARSZeroShot' in self.models:
+                self.models['TARSZeroShot'].set_topics(['rec.sport.hockey', 'sci.space', 'comp.graphics', 'comp.sys.mac.hardware', 'talk.politics.guns', 'sci.med', 'misc.forsale', 'alt.atheism', 'talk.politics.misc', 'comp.os.ms-windows.misc', 'comp.sys.ibm.pc.hardware', 'sci.crypt', 'talk.religion.misc', 'comp.windows.x', 'rec.sport.baseball', 'talk.politics.mideast', 'rec.autos', 'rec.motorcycles', 'sci.electronics', 'soc.religion.christian'])
+                self.models['TARSZeroShot'].set_topics_mapping({'alt.atheism': 1,
+                    'comp.graphics': 2,
+                    'comp.os.ms-windows.misc': 3,
+                    'comp.sys.ibm.pc.hardware': 4,
+                    'comp.sys.mac.hardware': 5,
+                    'comp.windows.x': 6,
+                    'misc.forsale': 7,
+                    'rec.autos': 8,
+                    'rec.motorcycles': 9,
+                    'rec.sport.baseball': 10,
+                    'rec.sport.hockey': 11,
+                    'sci.crypt': 12,
+                    'sci.electronics': 13,
+                    'sci.med': 14,
+                    'sci.space': 15,
+                    'soc.religion.christian': 16,
+                    'talk.politics.guns': 17,
+                    'talk.politics.mideast': 18,
+                    'talk.politics.misc': 19,
+                    'talk.religion.misc': 20
                 })
 
     def evaluate_with_training(self, training_data, documents_dict, noise_strategies=None):
@@ -147,9 +182,9 @@ class ClassificationPipelineOrchestrator(IPipelineOrchestrator):
                         noisy_documents = noise_strategy.apply(documents)
                         train_x, train_y = training_data[dataset_name]
                         model.fit_model(train_x, train_y)
-                        
                         if name == 'LLMClassifier' or name == 'TARSZeroShot':
                             self.set_topics(dataset_name)
+
                         eval_results, df = model.evaluate(noisy_documents, true_labels)
 
                         # if name == 'LLMClassifier':
