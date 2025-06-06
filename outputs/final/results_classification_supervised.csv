@@ -1,25 +1,225 @@
 Dataset,Noise,Model,Accuracy,F1 Score,Precision,Recall
-AG News Full,NoNoise,LightGBM,0.2,0.33,1.0,0.2
-AG News Full,NoNoise,LightGBMRoberta,0.6,0.6,0.6,0.6
-AG News Full,NoNoise,RandomForest,0.8,0.89,1.0,0.8
-AG News Full,NoNoise,RandomForestRoberta,0.6,0.6,0.6,0.6
-AG News Full,NoNoise,SVM,0.6,0.59,0.67,0.6
-AG News Full,NoNoise,SVMRoberta,0.4,0.36,0.33,0.4
-AG News Full,NoNoise,XGBoost,0.8,0.87,1.0,0.8
-AG News Full,NoNoise,XGBoostRoberta,0.4,0.36,0.33,0.4
-AG News LLM labels,NoNoise,LightGBM,0.0,0.0,0.0,0.0
-AG News LLM labels,NoNoise,LightGBMRoberta,0.6,0.5,0.47,0.6
-AG News LLM labels,NoNoise,RandomForest,0.0,0.0,0.0,0.0
-AG News LLM labels,NoNoise,RandomForestRoberta,0.2,0.2,0.2,0.2
-AG News LLM labels,NoNoise,SVM,0.0,0.0,0.0,0.0
-AG News LLM labels,NoNoise,SVMRoberta,0.4,0.36,0.33,0.4
-AG News LLM labels,NoNoise,XGBoost,0.2,0.27,0.4,0.2
-AG News LLM labels,NoNoise,XGBoostRoberta,0.4,0.3,0.27,0.4
-BBC News Full,NoNoise,LightGBM,0.0,0.0,0.0,0.0
-BBC News Full,NoNoise,LightGBMRoberta,0.8,0.73,0.7,0.8
-BBC News Full,NoNoise,RandomForest,0.6,0.53,0.5,0.6
-BBC News Full,NoNoise,RandomForestRoberta,0.6,0.53,0.6,0.6
-BBC News Full,NoNoise,SVM,0.8,0.81,0.9,0.8
-BBC News Full,NoNoise,SVMRoberta,0.8,0.73,0.7,0.8
-BBC News Full,NoNoise,XGBoost,0.2,0.2,0.2,0.2
-BBC News Full,NoNoise,XGBoostRoberta,0.2,0.24,0.3,0.2
+AG News Full,AddRandomCharsNoise,LightGBM,0.25,0.4,1.0,0.25
+AG News Full,AddRandomCharsNoise,LightGBMRoberta,0.74,0.74,0.75,0.74
+AG News Full,AddRandomCharsNoise,RandomForest,0.5,0.5,0.56,0.5
+AG News Full,AddRandomCharsNoise,RandomForestRoberta,0.78,0.77,0.78,0.78
+AG News Full,AddRandomCharsNoise,SVM,0.62,0.62,0.63,0.62
+AG News Full,AddRandomCharsNoise,SVMRoberta,0.83,0.83,0.83,0.83
+AG News Full,AddRandomCharsNoise,XGBoost,0.35,0.36,0.45,0.35
+AG News Full,AddRandomCharsNoise,XGBoostRoberta,0.7,0.7,0.71,0.7
+AG News Full,AddRandomWordsNoise,LightGBM,0.25,0.4,1.0,0.25
+AG News Full,AddRandomWordsNoise,LightGBMRoberta,0.77,0.77,0.77,0.77
+AG News Full,AddRandomWordsNoise,RandomForest,0.54,0.54,0.57,0.54
+AG News Full,AddRandomWordsNoise,RandomForestRoberta,0.8,0.8,0.8,0.8
+AG News Full,AddRandomWordsNoise,SVM,0.64,0.65,0.66,0.64
+AG News Full,AddRandomWordsNoise,SVMRoberta,0.83,0.83,0.83,0.83
+AG News Full,AddRandomWordsNoise,XGBoost,0.38,0.38,0.43,0.38
+AG News Full,AddRandomWordsNoise,XGBoostRoberta,0.72,0.72,0.72,0.72
+AG News Full,DeleteRandomWordsNoise,LightGBM,0.25,0.4,1.0,0.25
+AG News Full,DeleteRandomWordsNoise,LightGBMRoberta,0.78,0.78,0.78,0.78
+AG News Full,DeleteRandomWordsNoise,RandomForest,0.5,0.5,0.56,0.5
+AG News Full,DeleteRandomWordsNoise,RandomForestRoberta,0.8,0.8,0.8,0.8
+AG News Full,DeleteRandomWordsNoise,SVM,0.62,0.62,0.63,0.62
+AG News Full,DeleteRandomWordsNoise,SVMRoberta,0.84,0.84,0.84,0.84
+AG News Full,DeleteRandomWordsNoise,XGBoost,0.35,0.36,0.45,0.35
+AG News Full,DeleteRandomWordsNoise,XGBoostRoberta,0.73,0.73,0.73,0.73
+AG News Full,NoNoise,LightGBM,0.25,0.4,1.0,0.25
+AG News Full,NoNoise,LightGBMRoberta,0.8,0.8,0.8,0.8
+AG News Full,NoNoise,RandomForest,0.54,0.54,0.57,0.54
+AG News Full,NoNoise,RandomForestRoberta,0.82,0.82,0.82,0.82
+AG News Full,NoNoise,SVM,0.65,0.65,0.66,0.65
+AG News Full,NoNoise,SVMRoberta,0.84,0.84,0.85,0.84
+AG News Full,NoNoise,XGBoost,0.38,0.38,0.43,0.38
+AG News Full,NoNoise,XGBoostRoberta,0.76,0.76,0.76,0.76
+AG News Full,ReplaceWithAntonymsNoise,LightGBM,0.25,0.4,1.0,0.25
+AG News Full,ReplaceWithAntonymsNoise,LightGBMRoberta,0.74,0.74,0.75,0.74
+AG News Full,ReplaceWithAntonymsNoise,RandomForest,0.54,0.54,0.57,0.54
+AG News Full,ReplaceWithAntonymsNoise,RandomForestRoberta,0.78,0.78,0.78,0.78
+AG News Full,ReplaceWithAntonymsNoise,SVM,0.65,0.65,0.67,0.65
+AG News Full,ReplaceWithAntonymsNoise,SVMRoberta,0.83,0.83,0.84,0.83
+AG News Full,ReplaceWithAntonymsNoise,XGBoost,0.38,0.38,0.44,0.38
+AG News Full,ReplaceWithAntonymsNoise,XGBoostRoberta,0.62,0.62,0.71,0.62
+AG News Full,ReplaceWithSynonymsNoise,LightGBM,0.25,0.4,1.0,0.25
+AG News Full,ReplaceWithSynonymsNoise,LightGBMRoberta,0.74,0.73,0.75,0.74
+AG News Full,ReplaceWithSynonymsNoise,RandomForest,0.53,0.53,0.56,0.53
+AG News Full,ReplaceWithSynonymsNoise,RandomForestRoberta,0.78,0.78,0.78,0.78
+AG News Full,ReplaceWithSynonymsNoise,SVM,0.64,0.64,0.66,0.64
+AG News Full,ReplaceWithSynonymsNoise,SVMRoberta,0.83,0.83,0.84,0.83
+AG News Full,ReplaceWithSynonymsNoise,XGBoost,0.37,0.38,0.43,0.37
+AG News Full,ReplaceWithSynonymsNoise,XGBoostRoberta,0.62,0.61,0.71,0.62
+AG News Full,ShuffleSentencesNoise,LightGBM,0.25,0.4,1.0,0.25
+AG News Full,ShuffleSentencesNoise,LightGBMRoberta,0.8,0.8,0.8,0.8
+AG News Full,ShuffleSentencesNoise,RandomForest,0.54,0.54,0.57,0.54
+AG News Full,ShuffleSentencesNoise,RandomForestRoberta,0.82,0.82,0.82,0.82
+AG News Full,ShuffleSentencesNoise,SVM,0.65,0.65,0.66,0.65
+AG News Full,ShuffleSentencesNoise,SVMRoberta,0.84,0.84,0.85,0.84
+AG News Full,ShuffleSentencesNoise,XGBoost,0.38,0.38,0.43,0.38
+AG News Full,ShuffleSentencesNoise,XGBoostRoberta,0.76,0.76,0.76,0.76
+AG News LLM labels,AddRandomCharsNoise,LightGBM,0.25,0.4,1.0,0.25
+AG News LLM labels,AddRandomCharsNoise,LightGBMRoberta,0.63,0.67,0.81,0.63
+AG News LLM labels,AddRandomCharsNoise,RandomForest,0.26,0.4,0.99,0.26
+AG News LLM labels,AddRandomCharsNoise,RandomForestRoberta,0.6,0.65,0.85,0.6
+AG News LLM labels,AddRandomCharsNoise,SVM,0.25,0.4,1.0,0.25
+AG News LLM labels,AddRandomCharsNoise,SVMRoberta,0.71,0.74,0.87,0.71
+AG News LLM labels,AddRandomCharsNoise,XGBoost,0.34,0.39,0.69,0.34
+AG News LLM labels,AddRandomCharsNoise,XGBoostRoberta,0.6,0.65,0.78,0.6
+AG News LLM labels,AddRandomWordsNoise,LightGBM,0.25,0.4,1.0,0.25
+AG News LLM labels,AddRandomWordsNoise,LightGBMRoberta,0.65,0.69,0.82,0.65
+AG News LLM labels,AddRandomWordsNoise,RandomForest,0.27,0.4,0.98,0.27
+AG News LLM labels,AddRandomWordsNoise,RandomForestRoberta,0.63,0.67,0.86,0.63
+AG News LLM labels,AddRandomWordsNoise,SVM,0.25,0.4,1.0,0.25
+AG News LLM labels,AddRandomWordsNoise,SVMRoberta,0.71,0.74,0.86,0.71
+AG News LLM labels,AddRandomWordsNoise,XGBoost,0.36,0.4,0.64,0.36
+AG News LLM labels,AddRandomWordsNoise,XGBoostRoberta,0.61,0.66,0.79,0.61
+AG News LLM labels,DeleteRandomWordsNoise,LightGBM,0.25,0.4,1.0,0.25
+AG News LLM labels,DeleteRandomWordsNoise,LightGBMRoberta,0.64,0.69,0.83,0.64
+AG News LLM labels,DeleteRandomWordsNoise,RandomForest,0.26,0.4,0.99,0.26
+AG News LLM labels,DeleteRandomWordsNoise,RandomForestRoberta,0.63,0.69,0.87,0.63
+AG News LLM labels,DeleteRandomWordsNoise,SVM,0.25,0.4,1.0,0.25
+AG News LLM labels,DeleteRandomWordsNoise,SVMRoberta,0.71,0.75,0.88,0.71
+AG News LLM labels,DeleteRandomWordsNoise,XGBoost,0.34,0.39,0.69,0.34
+AG News LLM labels,DeleteRandomWordsNoise,XGBoostRoberta,0.61,0.66,0.8,0.61
+AG News LLM labels,NoNoise,LightGBM,0.25,0.4,1.0,0.25
+AG News LLM labels,NoNoise,LightGBMRoberta,0.66,0.7,0.84,0.66
+AG News LLM labels,NoNoise,RandomForest,0.27,0.4,0.98,0.27
+AG News LLM labels,NoNoise,RandomForestRoberta,0.64,0.69,0.87,0.64
+AG News LLM labels,NoNoise,SVM,0.25,0.4,1.0,0.25
+AG News LLM labels,NoNoise,SVMRoberta,0.72,0.75,0.87,0.72
+AG News LLM labels,NoNoise,XGBoost,0.36,0.4,0.65,0.36
+AG News LLM labels,NoNoise,XGBoostRoberta,0.64,0.68,0.8,0.64
+AG News LLM labels,ReplaceWithAntonymsNoise,LightGBM,0.25,0.4,1.0,0.25
+AG News LLM labels,ReplaceWithAntonymsNoise,LightGBMRoberta,0.58,0.64,0.84,0.58
+AG News LLM labels,ReplaceWithAntonymsNoise,RandomForest,0.27,0.4,0.98,0.27
+AG News LLM labels,ReplaceWithAntonymsNoise,RandomForestRoberta,0.6,0.66,0.86,0.6
+AG News LLM labels,ReplaceWithAntonymsNoise,SVM,0.25,0.4,1.0,0.25
+AG News LLM labels,ReplaceWithAntonymsNoise,SVMRoberta,0.72,0.76,0.89,0.72
+AG News LLM labels,ReplaceWithAntonymsNoise,XGBoost,0.36,0.4,0.65,0.36
+AG News LLM labels,ReplaceWithAntonymsNoise,XGBoostRoberta,0.52,0.6,0.82,0.52
+AG News LLM labels,ReplaceWithSynonymsNoise,LightGBM,0.25,0.4,1.0,0.25
+AG News LLM labels,ReplaceWithSynonymsNoise,LightGBMRoberta,0.57,0.63,0.83,0.57
+AG News LLM labels,ReplaceWithSynonymsNoise,RandomForest,0.26,0.4,0.99,0.26
+AG News LLM labels,ReplaceWithSynonymsNoise,RandomForestRoberta,0.59,0.65,0.86,0.59
+AG News LLM labels,ReplaceWithSynonymsNoise,SVM,0.25,0.4,1.0,0.25
+AG News LLM labels,ReplaceWithSynonymsNoise,SVMRoberta,0.71,0.76,0.89,0.71
+AG News LLM labels,ReplaceWithSynonymsNoise,XGBoost,0.35,0.4,0.65,0.35
+AG News LLM labels,ReplaceWithSynonymsNoise,XGBoostRoberta,0.52,0.59,0.82,0.52
+AG News LLM labels,ShuffleSentencesNoise,LightGBM,0.25,0.4,1.0,0.25
+AG News LLM labels,ShuffleSentencesNoise,LightGBMRoberta,0.67,0.7,0.84,0.67
+AG News LLM labels,ShuffleSentencesNoise,RandomForest,0.27,0.4,0.98,0.27
+AG News LLM labels,ShuffleSentencesNoise,RandomForestRoberta,0.64,0.69,0.87,0.64
+AG News LLM labels,ShuffleSentencesNoise,SVM,0.25,0.4,1.0,0.25
+AG News LLM labels,ShuffleSentencesNoise,SVMRoberta,0.72,0.75,0.88,0.72
+AG News LLM labels,ShuffleSentencesNoise,XGBoost,0.36,0.4,0.65,0.36
+AG News LLM labels,ShuffleSentencesNoise,XGBoostRoberta,0.64,0.68,0.8,0.64
+BBC News Full,AddRandomCharsNoise,LightGBM,0.55,0.54,0.56,0.55
+BBC News Full,AddRandomCharsNoise,LightGBMRoberta,0.62,0.66,0.83,0.62
+BBC News Full,AddRandomCharsNoise,RandomForest,0.86,0.87,0.87,0.86
+BBC News Full,AddRandomCharsNoise,RandomForestRoberta,0.66,0.7,0.86,0.66
+BBC News Full,AddRandomCharsNoise,SVM,0.91,0.91,0.92,0.91
+BBC News Full,AddRandomCharsNoise,SVMRoberta,0.82,0.83,0.89,0.82
+BBC News Full,AddRandomCharsNoise,XGBoost,0.73,0.73,0.73,0.73
+BBC News Full,AddRandomCharsNoise,XGBoostRoberta,0.38,0.45,0.87,0.38
+BBC News Full,AddRandomWordsNoise,LightGBM,0.54,0.54,0.55,0.54
+BBC News Full,AddRandomWordsNoise,LightGBMRoberta,0.58,0.63,0.83,0.58
+BBC News Full,AddRandomWordsNoise,RandomForest,0.87,0.87,0.88,0.87
+BBC News Full,AddRandomWordsNoise,RandomForestRoberta,0.57,0.62,0.85,0.57
+BBC News Full,AddRandomWordsNoise,SVM,0.92,0.92,0.92,0.92
+BBC News Full,AddRandomWordsNoise,SVMRoberta,0.77,0.81,0.91,0.77
+BBC News Full,AddRandomWordsNoise,XGBoost,0.73,0.73,0.74,0.73
+BBC News Full,AddRandomWordsNoise,XGBoostRoberta,0.31,0.41,0.93,0.31
+BBC News Full,DeleteRandomWordsNoise,LightGBM,0.54,0.54,0.55,0.54
+BBC News Full,DeleteRandomWordsNoise,LightGBMRoberta,0.69,0.72,0.86,0.69
+BBC News Full,DeleteRandomWordsNoise,RandomForest,0.87,0.87,0.88,0.87
+BBC News Full,DeleteRandomWordsNoise,RandomForestRoberta,0.73,0.77,0.87,0.73
+BBC News Full,DeleteRandomWordsNoise,SVM,0.92,0.92,0.92,0.92
+BBC News Full,DeleteRandomWordsNoise,SVMRoberta,0.89,0.9,0.92,0.89
+BBC News Full,DeleteRandomWordsNoise,XGBoost,0.72,0.72,0.72,0.72
+BBC News Full,DeleteRandomWordsNoise,XGBoostRoberta,0.49,0.53,0.8,0.49
+BBC News Full,NoNoise,LightGBM,0.55,0.55,0.56,0.55
+BBC News Full,NoNoise,LightGBMRoberta,0.87,0.87,0.88,0.87
+BBC News Full,NoNoise,RandomForest,0.89,0.89,0.89,0.89
+BBC News Full,NoNoise,RandomForestRoberta,0.91,0.91,0.91,0.91
+BBC News Full,NoNoise,SVM,0.92,0.92,0.92,0.92
+BBC News Full,NoNoise,SVMRoberta,0.95,0.95,0.95,0.95
+BBC News Full,NoNoise,XGBoost,0.75,0.74,0.75,0.75
+BBC News Full,NoNoise,XGBoostRoberta,0.79,0.8,0.8,0.79
+BBC News Full,ReplaceWithAntonymsNoise,LightGBM,0.55,0.55,0.56,0.55
+BBC News Full,ReplaceWithAntonymsNoise,LightGBMRoberta,0.76,0.79,0.85,0.76
+BBC News Full,ReplaceWithAntonymsNoise,RandomForest,0.88,0.88,0.89,0.88
+BBC News Full,ReplaceWithAntonymsNoise,RandomForestRoberta,0.87,0.87,0.88,0.87
+BBC News Full,ReplaceWithAntonymsNoise,SVM,0.92,0.92,0.92,0.92
+BBC News Full,ReplaceWithAntonymsNoise,SVMRoberta,0.91,0.91,0.92,0.91
+BBC News Full,ReplaceWithAntonymsNoise,XGBoost,0.74,0.74,0.74,0.74
+BBC News Full,ReplaceWithAntonymsNoise,XGBoostRoberta,0.63,0.64,0.76,0.63
+BBC News Full,ReplaceWithSynonymsNoise,LightGBM,0.55,0.55,0.56,0.55
+BBC News Full,ReplaceWithSynonymsNoise,LightGBMRoberta,0.76,0.79,0.85,0.76
+BBC News Full,ReplaceWithSynonymsNoise,RandomForest,0.88,0.88,0.89,0.88
+BBC News Full,ReplaceWithSynonymsNoise,RandomForestRoberta,0.87,0.87,0.88,0.87
+BBC News Full,ReplaceWithSynonymsNoise,SVM,0.92,0.92,0.92,0.92
+BBC News Full,ReplaceWithSynonymsNoise,SVMRoberta,0.9,0.9,0.91,0.9
+BBC News Full,ReplaceWithSynonymsNoise,XGBoost,0.74,0.74,0.74,0.74
+BBC News Full,ReplaceWithSynonymsNoise,XGBoostRoberta,0.61,0.63,0.75,0.61
+BBC News Full,ShuffleSentencesNoise,LightGBM,0.55,0.55,0.56,0.55
+BBC News Full,ShuffleSentencesNoise,LightGBMRoberta,0.87,0.87,0.87,0.87
+BBC News Full,ShuffleSentencesNoise,RandomForest,0.89,0.89,0.89,0.89
+BBC News Full,ShuffleSentencesNoise,RandomForestRoberta,0.91,0.91,0.91,0.91
+BBC News Full,ShuffleSentencesNoise,SVM,0.92,0.92,0.92,0.92
+BBC News Full,ShuffleSentencesNoise,SVMRoberta,0.95,0.95,0.95,0.95
+BBC News Full,ShuffleSentencesNoise,XGBoost,0.75,0.74,0.75,0.75
+BBC News Full,ShuffleSentencesNoise,XGBoostRoberta,0.81,0.81,0.81,0.81
+BBC News LLM labels,AddRandomCharsNoise,LightGBM,0.18,0.31,1.0,0.18
+BBC News LLM labels,AddRandomCharsNoise,LightGBMRoberta,0.16,0.25,0.67,0.16
+BBC News LLM labels,AddRandomCharsNoise,RandomForest,0.18,0.3,0.96,0.18
+BBC News LLM labels,AddRandomCharsNoise,RandomForestRoberta,0.1,0.16,0.4,0.1
+BBC News LLM labels,AddRandomCharsNoise,SVM,0.18,0.31,1.0,0.18
+BBC News LLM labels,AddRandomCharsNoise,SVMRoberta,0.08,0.11,0.21,0.08
+BBC News LLM labels,AddRandomCharsNoise,XGBoost,0.15,0.21,0.49,0.15
+BBC News LLM labels,AddRandomCharsNoise,XGBoostRoberta,0.13,0.2,0.48,0.13
+BBC News LLM labels,AddRandomWordsNoise,LightGBM,0.18,0.31,1.0,0.18
+BBC News LLM labels,AddRandomWordsNoise,LightGBMRoberta,0.16,0.24,0.62,0.16
+BBC News LLM labels,AddRandomWordsNoise,RandomForest,0.18,0.3,0.96,0.18
+BBC News LLM labels,AddRandomWordsNoise,RandomForestRoberta,0.09,0.12,0.24,0.09
+BBC News LLM labels,AddRandomWordsNoise,SVM,0.18,0.31,1.0,0.18
+BBC News LLM labels,AddRandomWordsNoise,SVMRoberta,0.08,0.11,0.2,0.08
+BBC News LLM labels,AddRandomWordsNoise,XGBoost,0.16,0.23,0.53,0.16
+BBC News LLM labels,AddRandomWordsNoise,XGBoostRoberta,0.11,0.16,0.38,0.11
+BBC News LLM labels,DeleteRandomWordsNoise,LightGBM,0.18,0.31,1.0,0.18
+BBC News LLM labels,DeleteRandomWordsNoise,LightGBMRoberta,0.14,0.2,0.45,0.14
+BBC News LLM labels,DeleteRandomWordsNoise,RandomForest,0.18,0.31,0.96,0.18
+BBC News LLM labels,DeleteRandomWordsNoise,RandomForestRoberta,0.08,0.11,0.21,0.08
+BBC News LLM labels,DeleteRandomWordsNoise,SVM,0.18,0.31,1.0,0.18
+BBC News LLM labels,DeleteRandomWordsNoise,SVMRoberta,0.07,0.09,0.16,0.07
+BBC News LLM labels,DeleteRandomWordsNoise,XGBoost,0.16,0.22,0.51,0.16
+BBC News LLM labels,DeleteRandomWordsNoise,XGBoostRoberta,0.1,0.14,0.25,0.1
+BBC News LLM labels,NoNoise,LightGBM,0.18,0.31,1.0,0.18
+BBC News LLM labels,NoNoise,LightGBMRoberta,0.13,0.17,0.38,0.13
+BBC News LLM labels,NoNoise,RandomForest,0.18,0.31,0.96,0.18
+BBC News LLM labels,NoNoise,RandomForestRoberta,0.11,0.17,0.39,0.11
+BBC News LLM labels,NoNoise,SVM,0.18,0.31,1.0,0.18
+BBC News LLM labels,NoNoise,SVMRoberta,0.06,0.08,0.12,0.06
+BBC News LLM labels,NoNoise,XGBoost,0.16,0.23,0.54,0.16
+BBC News LLM labels,NoNoise,XGBoostRoberta,0.11,0.13,0.2,0.11
+BBC News LLM labels,ReplaceWithAntonymsNoise,LightGBM,0.18,0.31,1.0,0.18
+BBC News LLM labels,ReplaceWithAntonymsNoise,LightGBMRoberta,0.15,0.23,0.57,0.15
+BBC News LLM labels,ReplaceWithAntonymsNoise,RandomForest,0.18,0.3,0.95,0.18
+BBC News LLM labels,ReplaceWithAntonymsNoise,RandomForestRoberta,0.09,0.14,0.29,0.09
+BBC News LLM labels,ReplaceWithAntonymsNoise,SVM,0.18,0.31,1.0,0.18
+BBC News LLM labels,ReplaceWithAntonymsNoise,SVMRoberta,0.06,0.09,0.14,0.06
+BBC News LLM labels,ReplaceWithAntonymsNoise,XGBoost,0.16,0.23,0.54,0.16
+BBC News LLM labels,ReplaceWithAntonymsNoise,XGBoostRoberta,0.1,0.15,0.28,0.1
+BBC News LLM labels,ReplaceWithSynonymsNoise,LightGBM,0.18,0.31,1.0,0.18
+BBC News LLM labels,ReplaceWithSynonymsNoise,LightGBMRoberta,0.15,0.22,0.56,0.15
+BBC News LLM labels,ReplaceWithSynonymsNoise,RandomForest,0.18,0.31,0.96,0.18
+BBC News LLM labels,ReplaceWithSynonymsNoise,RandomForestRoberta,0.09,0.14,0.29,0.09
+BBC News LLM labels,ReplaceWithSynonymsNoise,SVM,0.18,0.31,1.0,0.18
+BBC News LLM labels,ReplaceWithSynonymsNoise,SVMRoberta,0.06,0.09,0.14,0.06
+BBC News LLM labels,ReplaceWithSynonymsNoise,XGBoost,0.15,0.22,0.52,0.15
+BBC News LLM labels,ReplaceWithSynonymsNoise,XGBoostRoberta,0.1,0.15,0.29,0.1
+BBC News LLM labels,ShuffleSentencesNoise,LightGBM,0.18,0.31,1.0,0.18
+BBC News LLM labels,ShuffleSentencesNoise,LightGBMRoberta,0.12,0.16,0.35,0.12
+BBC News LLM labels,ShuffleSentencesNoise,RandomForest,0.18,0.31,0.96,0.18
+BBC News LLM labels,ShuffleSentencesNoise,RandomForestRoberta,0.11,0.16,0.34,0.11
+BBC News LLM labels,ShuffleSentencesNoise,SVM,0.18,0.31,1.0,0.18
+BBC News LLM labels,ShuffleSentencesNoise,SVMRoberta,0.06,0.08,0.12,0.06
+BBC News LLM labels,ShuffleSentencesNoise,XGBoost,0.16,0.23,0.54,0.16
+BBC News LLM labels,ShuffleSentencesNoise,XGBoostRoberta,0.1,0.12,0.17,0.1
