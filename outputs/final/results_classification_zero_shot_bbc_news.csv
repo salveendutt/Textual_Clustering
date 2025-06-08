@@ -1,0 +1,15 @@
+Dataset,Noise,Model,Accuracy,F1 Score,Precision,Recall
+BBC News Full,AddRandomCharsNoise,LLMClassifier,0.92,0.92,0.92,0.92
+BBC News Full,AddRandomCharsNoise,TARSZeroShot,0.82,0.79,0.77,0.82
+BBC News Full,AddRandomWordsNoise,LLMClassifier,0.92,0.91,0.91,0.92
+BBC News Full,AddRandomWordsNoise,TARSZeroShot,0.75,0.73,0.73,0.75
+BBC News Full,DeleteRandomWordsNoise,LLMClassifier,0.92,0.92,0.92,0.92
+BBC News Full,DeleteRandomWordsNoise,TARSZeroShot,0.79,0.76,0.76,0.79
+BBC News Full,NoNoise,LLMClassifier,0.91,0.9,0.9,0.91
+BBC News Full,NoNoise,TARSZeroShot,0.79,0.76,0.76,0.79
+BBC News Full,ReplaceWithAntonymsNoise,LLMClassifier,0.92,0.92,0.92,0.92
+BBC News Full,ReplaceWithAntonymsNoise,TARSZeroShot,0.78,0.77,0.77,0.78
+BBC News Full,ReplaceWithSynonymsNoise,LLMClassifier,0.92,0.92,0.93,0.92
+BBC News Full,ReplaceWithSynonymsNoise,TARSZeroShot,0.79,0.76,0.75,0.79
+BBC News Full,ShuffleSentencesNoise,LLMClassifier,0.92,0.92,0.92,0.92
+BBC News Full,ShuffleSentencesNoise,TARSZeroShot,0.8,0.77,0.76,0.8

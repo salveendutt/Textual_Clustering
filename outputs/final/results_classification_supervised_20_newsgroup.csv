@@ -1,0 +1,113 @@
+Dataset,Noise,Model,Accuracy,F1 Score,Precision,Recall
+20 Newsgroups Full,AddRandomCharsNoise,LightGBM,0.14,0.14,0.15,0.14
+20 Newsgroups Full,AddRandomCharsNoise,LightGBMRoberta,0.33,0.34,0.39,0.33
+20 Newsgroups Full,AddRandomCharsNoise,RandomForest,0.33,0.32,0.57,0.33
+20 Newsgroups Full,AddRandomCharsNoise,RandomForestRoberta,0.34,0.35,0.39,0.34
+20 Newsgroups Full,AddRandomCharsNoise,SVM,0.4,0.4,0.54,0.4
+20 Newsgroups Full,AddRandomCharsNoise,SVMRoberta,0.44,0.43,0.55,0.44
+20 Newsgroups Full,AddRandomCharsNoise,XGBoost,0.29,0.29,0.32,0.29
+20 Newsgroups Full,AddRandomCharsNoise,XGBoostRoberta,0.3,0.3,0.37,0.3
+20 Newsgroups Full,AddRandomWordsNoise,LightGBM,0.15,0.15,0.15,0.15
+20 Newsgroups Full,AddRandomWordsNoise,LightGBMRoberta,0.33,0.33,0.38,0.33
+20 Newsgroups Full,AddRandomWordsNoise,RandomForest,0.36,0.35,0.56,0.36
+20 Newsgroups Full,AddRandomWordsNoise,RandomForestRoberta,0.34,0.35,0.4,0.34
+20 Newsgroups Full,AddRandomWordsNoise,SVM,0.41,0.41,0.55,0.41
+20 Newsgroups Full,AddRandomWordsNoise,SVMRoberta,0.45,0.45,0.52,0.45
+20 Newsgroups Full,AddRandomWordsNoise,XGBoost,0.31,0.31,0.34,0.31
+20 Newsgroups Full,AddRandomWordsNoise,XGBoostRoberta,0.3,0.3,0.36,0.3
+20 Newsgroups Full,DeleteRandomWordsNoise,LightGBM,0.15,0.15,0.15,0.15
+20 Newsgroups Full,DeleteRandomWordsNoise,LightGBMRoberta,0.38,0.38,0.41,0.38
+20 Newsgroups Full,DeleteRandomWordsNoise,RandomForest,0.33,0.31,0.57,0.33
+20 Newsgroups Full,DeleteRandomWordsNoise,RandomForestRoberta,0.38,0.38,0.42,0.38
+20 Newsgroups Full,DeleteRandomWordsNoise,SVM,0.4,0.4,0.53,0.4
+20 Newsgroups Full,DeleteRandomWordsNoise,SVMRoberta,0.51,0.5,0.52,0.51
+20 Newsgroups Full,DeleteRandomWordsNoise,XGBoost,0.29,0.29,0.32,0.29
+20 Newsgroups Full,DeleteRandomWordsNoise,XGBoostRoberta,0.34,0.34,0.39,0.34
+20 Newsgroups Full,NoNoise,LightGBM,0.15,0.15,0.15,0.15
+20 Newsgroups Full,NoNoise,LightGBMRoberta,0.43,0.43,0.43,0.43
+20 Newsgroups Full,NoNoise,RandomForest,0.37,0.35,0.56,0.37
+20 Newsgroups Full,NoNoise,RandomForestRoberta,0.42,0.43,0.44,0.42
+20 Newsgroups Full,NoNoise,SVM,0.43,0.43,0.56,0.43
+20 Newsgroups Full,NoNoise,SVMRoberta,0.55,0.56,0.57,0.55
+20 Newsgroups Full,NoNoise,XGBoost,0.31,0.31,0.34,0.31
+20 Newsgroups Full,NoNoise,XGBoostRoberta,0.39,0.39,0.39,0.39
+20 Newsgroups Full,ReplaceWithAntonymsNoise,LightGBM,0.15,0.15,0.16,0.15
+20 Newsgroups Full,ReplaceWithAntonymsNoise,LightGBMRoberta,0.3,0.32,0.49,0.3
+20 Newsgroups Full,ReplaceWithAntonymsNoise,RandomForest,0.36,0.35,0.56,0.36
+20 Newsgroups Full,ReplaceWithAntonymsNoise,RandomForestRoberta,0.33,0.34,0.4,0.33
+20 Newsgroups Full,ReplaceWithAntonymsNoise,SVM,0.43,0.43,0.56,0.43
+20 Newsgroups Full,ReplaceWithAntonymsNoise,SVMRoberta,0.45,0.45,0.57,0.45
+20 Newsgroups Full,ReplaceWithAntonymsNoise,XGBoost,0.31,0.31,0.34,0.31
+20 Newsgroups Full,ReplaceWithAntonymsNoise,XGBoostRoberta,0.27,0.29,0.48,0.27
+20 Newsgroups Full,ReplaceWithSynonymsNoise,LightGBM,0.15,0.15,0.16,0.15
+20 Newsgroups Full,ReplaceWithSynonymsNoise,LightGBMRoberta,0.3,0.32,0.49,0.3
+20 Newsgroups Full,ReplaceWithSynonymsNoise,RandomForest,0.36,0.34,0.56,0.36
+20 Newsgroups Full,ReplaceWithSynonymsNoise,RandomForestRoberta,0.32,0.34,0.4,0.32
+20 Newsgroups Full,ReplaceWithSynonymsNoise,SVM,0.42,0.42,0.55,0.42
+20 Newsgroups Full,ReplaceWithSynonymsNoise,SVMRoberta,0.45,0.45,0.56,0.45
+20 Newsgroups Full,ReplaceWithSynonymsNoise,XGBoost,0.31,0.31,0.33,0.31
+20 Newsgroups Full,ReplaceWithSynonymsNoise,XGBoostRoberta,0.27,0.29,0.48,0.27
+20 Newsgroups Full,ShuffleSentencesNoise,LightGBM,0.15,0.15,0.15,0.15
+20 Newsgroups Full,ShuffleSentencesNoise,LightGBMRoberta,0.42,0.42,0.42,0.42
+20 Newsgroups Full,ShuffleSentencesNoise,RandomForest,0.37,0.35,0.56,0.37
+20 Newsgroups Full,ShuffleSentencesNoise,RandomForestRoberta,0.42,0.42,0.44,0.42
+20 Newsgroups Full,ShuffleSentencesNoise,SVM,0.43,0.43,0.56,0.43
+20 Newsgroups Full,ShuffleSentencesNoise,SVMRoberta,0.54,0.55,0.56,0.54
+20 Newsgroups Full,ShuffleSentencesNoise,XGBoost,0.31,0.31,0.34,0.31
+20 Newsgroups Full,ShuffleSentencesNoise,XGBoostRoberta,0.38,0.38,0.39,0.38
+20 Newsgroups LLM labels,AddRandomCharsNoise,LightGBM,0.13,0.14,0.22,0.13
+20 Newsgroups LLM labels,AddRandomCharsNoise,LightGBMRoberta,0.29,0.31,0.4,0.29
+20 Newsgroups LLM labels,AddRandomCharsNoise,RandomForest,0.23,0.24,0.63,0.23
+20 Newsgroups LLM labels,AddRandomCharsNoise,RandomForestRoberta,0.23,0.25,0.54,0.23
+20 Newsgroups LLM labels,AddRandomCharsNoise,SVM,0.08,0.11,0.92,0.08
+20 Newsgroups LLM labels,AddRandomCharsNoise,SVMRoberta,0.33,0.33,0.57,0.33
+20 Newsgroups LLM labels,AddRandomCharsNoise,XGBoost,0.25,0.25,0.32,0.25
+20 Newsgroups LLM labels,AddRandomCharsNoise,XGBoostRoberta,0.27,0.29,0.36,0.27
+20 Newsgroups LLM labels,AddRandomWordsNoise,LightGBM,0.14,0.15,0.23,0.14
+20 Newsgroups LLM labels,AddRandomWordsNoise,LightGBMRoberta,0.31,0.31,0.38,0.31
+20 Newsgroups LLM labels,AddRandomWordsNoise,RandomForest,0.26,0.26,0.61,0.26
+20 Newsgroups LLM labels,AddRandomWordsNoise,RandomForestRoberta,0.24,0.26,0.51,0.24
+20 Newsgroups LLM labels,AddRandomWordsNoise,SVM,0.08,0.11,0.93,0.08
+20 Newsgroups LLM labels,AddRandomWordsNoise,SVMRoberta,0.35,0.34,0.55,0.35
+20 Newsgroups LLM labels,AddRandomWordsNoise,XGBoost,0.26,0.27,0.33,0.26
+20 Newsgroups LLM labels,AddRandomWordsNoise,XGBoostRoberta,0.28,0.29,0.36,0.28
+20 Newsgroups LLM labels,DeleteRandomWordsNoise,LightGBM,0.13,0.14,0.21,0.13
+20 Newsgroups LLM labels,DeleteRandomWordsNoise,LightGBMRoberta,0.33,0.34,0.4,0.33
+20 Newsgroups LLM labels,DeleteRandomWordsNoise,RandomForest,0.24,0.24,0.62,0.24
+20 Newsgroups LLM labels,DeleteRandomWordsNoise,RandomForestRoberta,0.27,0.3,0.54,0.27
+20 Newsgroups LLM labels,DeleteRandomWordsNoise,SVM,0.08,0.11,0.93,0.08
+20 Newsgroups LLM labels,DeleteRandomWordsNoise,SVMRoberta,0.4,0.4,0.51,0.4
+20 Newsgroups LLM labels,DeleteRandomWordsNoise,XGBoost,0.24,0.24,0.31,0.24
+20 Newsgroups LLM labels,DeleteRandomWordsNoise,XGBoostRoberta,0.31,0.32,0.39,0.31
+20 Newsgroups LLM labels,NoNoise,LightGBM,0.14,0.15,0.23,0.14
+20 Newsgroups LLM labels,NoNoise,LightGBMRoberta,0.37,0.38,0.48,0.37
+20 Newsgroups LLM labels,NoNoise,RandomForest,0.26,0.26,0.61,0.26
+20 Newsgroups LLM labels,NoNoise,RandomForestRoberta,0.31,0.34,0.56,0.31
+20 Newsgroups LLM labels,NoNoise,SVM,0.08,0.11,0.92,0.08
+20 Newsgroups LLM labels,NoNoise,SVMRoberta,0.45,0.46,0.55,0.45
+20 Newsgroups LLM labels,NoNoise,XGBoost,0.27,0.27,0.33,0.27
+20 Newsgroups LLM labels,NoNoise,XGBoostRoberta,0.34,0.35,0.45,0.34
+20 Newsgroups LLM labels,ReplaceWithAntonymsNoise,LightGBM,0.14,0.15,0.22,0.14
+20 Newsgroups LLM labels,ReplaceWithAntonymsNoise,LightGBMRoberta,0.28,0.3,0.49,0.28
+20 Newsgroups LLM labels,ReplaceWithAntonymsNoise,RandomForest,0.26,0.26,0.61,0.26
+20 Newsgroups LLM labels,ReplaceWithAntonymsNoise,RandomForestRoberta,0.22,0.27,0.6,0.22
+20 Newsgroups LLM labels,ReplaceWithAntonymsNoise,SVM,0.08,0.11,0.92,0.08
+20 Newsgroups LLM labels,ReplaceWithAntonymsNoise,SVMRoberta,0.39,0.41,0.6,0.39
+20 Newsgroups LLM labels,ReplaceWithAntonymsNoise,XGBoost,0.27,0.27,0.33,0.27
+20 Newsgroups LLM labels,ReplaceWithAntonymsNoise,XGBoostRoberta,0.26,0.29,0.47,0.26
+20 Newsgroups LLM labels,ReplaceWithSynonymsNoise,LightGBM,0.13,0.15,0.22,0.13
+20 Newsgroups LLM labels,ReplaceWithSynonymsNoise,LightGBMRoberta,0.28,0.3,0.5,0.28
+20 Newsgroups LLM labels,ReplaceWithSynonymsNoise,RandomForest,0.26,0.26,0.62,0.26
+20 Newsgroups LLM labels,ReplaceWithSynonymsNoise,RandomForestRoberta,0.21,0.27,0.6,0.21
+20 Newsgroups LLM labels,ReplaceWithSynonymsNoise,SVM,0.08,0.11,0.92,0.08
+20 Newsgroups LLM labels,ReplaceWithSynonymsNoise,SVMRoberta,0.38,0.4,0.59,0.38
+20 Newsgroups LLM labels,ReplaceWithSynonymsNoise,XGBoost,0.26,0.26,0.33,0.26
+20 Newsgroups LLM labels,ReplaceWithSynonymsNoise,XGBoostRoberta,0.27,0.29,0.48,0.27
+20 Newsgroups LLM labels,ShuffleSentencesNoise,LightGBM,0.14,0.15,0.23,0.14
+20 Newsgroups LLM labels,ShuffleSentencesNoise,LightGBMRoberta,0.37,0.37,0.44,0.37
+20 Newsgroups LLM labels,ShuffleSentencesNoise,RandomForest,0.26,0.26,0.61,0.26
+20 Newsgroups LLM labels,ShuffleSentencesNoise,RandomForestRoberta,0.32,0.34,0.54,0.32
+20 Newsgroups LLM labels,ShuffleSentencesNoise,SVM,0.08,0.11,0.92,0.08
+20 Newsgroups LLM labels,ShuffleSentencesNoise,SVMRoberta,0.46,0.46,0.52,0.46
+20 Newsgroups LLM labels,ShuffleSentencesNoise,XGBoost,0.27,0.27,0.33,0.27
+20 Newsgroups LLM labels,ShuffleSentencesNoise,XGBoostRoberta,0.35,0.35,0.42,0.35
