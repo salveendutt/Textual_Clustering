@@ -1,0 +1,15 @@
+Dataset,Noise,Model,Accuracy,F1 Score,Precision,Recall
+AG News Full,AddRandomCharsNoise,LLMClassifier,0.75,0.78,0.86,0.75
+AG News Full,AddRandomCharsNoise,TARSZeroShot,0.71,0.67,0.66,0.71
+AG News Full,AddRandomWordsNoise,LLMClassifier,0.76,0.78,0.85,0.76
+AG News Full,AddRandomWordsNoise,TARSZeroShot,0.71,0.67,0.66,0.71
+AG News Full,DeleteRandomWordsNoise,LLMClassifier,0.74,0.77,0.86,0.74
+AG News Full,DeleteRandomWordsNoise,TARSZeroShot,0.7,0.67,0.67,0.7
+AG News Full,NoNoise,LLMClassifier,0.75,0.78,0.87,0.75
+AG News Full,NoNoise,TARSZeroShot,0.73,0.71,0.7,0.73
+AG News Full,ReplaceWithAntonymsNoise,LLMClassifier,0.75,0.78,0.86,0.75
+AG News Full,ReplaceWithAntonymsNoise,TARSZeroShot,0.73,0.7,0.7,0.73
+AG News Full,ReplaceWithSynonymsNoise,LLMClassifier,0.75,0.78,0.87,0.75
+AG News Full,ReplaceWithSynonymsNoise,TARSZeroShot,0.73,0.7,0.7,0.73
+AG News Full,ShuffleSentencesNoise,LLMClassifier,0.75,0.78,0.87,0.75
+AG News Full,ShuffleSentencesNoise,TARSZeroShot,0.73,0.7,0.7,0.73
