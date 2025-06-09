@@ -16,6 +16,8 @@ from typing import List, Optional, Union
 from langchain_ollama import OllamaLLM
 import logging
 import uuid
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import threading
 
 logging.getLogger("httpx").setLevel(logging.WARNING)
 
@@ -601,12 +603,152 @@ Please return ONLY the topic name. DO NOT OUTPUT any additional text, quotes, or
         predictions = []
         
         for doc in tqdm(documents.tolist(), desc="Classifying with LLM"):
-            prompt = self.generate_prompt(doc)
-            response = self.model.invoke(prompt)
-            response = response.strip()
-            prediction = response.replace('``', '').replace('"', '').replace("'", "")
-            predictions.append(prediction)
-        
+            try:
+                prompt = self.generate_prompt(doc)
+                response = self.model.invoke(prompt)
+                response = response.strip()
+                prediction = response.replace('``', '').replace('"', '').replace("'", "")
+                predictions.append(prediction)
+            except Exception as e:
+                print(f"Error processing document: {str(e)}")
+                predictions.append("Unknown")
         text_to_class_mapping = self.topics_mapping
         preds_mapped = [text_to_class_mapping.get(pred, -1) for pred in predictions]
         return np.array(preds_mapped)
+
+# class LLMClassifierModel(IClasificationModel):
+#     def __init__(self, model_name: str = 'gemma3'):
+#         self.model = OllamaLLM(model=model_name)
+#         self.topics = None
+#         self.topics_mapping = None
+#         self._lock = threading.Lock()  # For thread-safe operations if needed
+        
+#     def fit_model(self, train_data_X, train_data_y):
+#         pass
+        
+#     def set_topics(self, topics: List[str]):
+#         """
+#         Set the topics for classification.
+#         Args:
+#             topics: List of topic names to classify the documents into.
+#         """
+#         self.topics = topics
+        
+#     def set_topics_mapping(self, mapping: List[str]):
+#         """
+#         Set the topics for classification.
+#         Args:
+#             topics: List of topic names to classify the documents into.
+#         """
+#         self.topics_mapping = mapping
+        
+#     def generate_prompt(self, document):
+#         return f'''You are provided with news and helping to classify them based on the topics.
+# Please assign the news to the topics provided. Return only the name of the topic for the respective news.
+# News can be found in tripletick block: ```{document}```
+# Topics to choose from: {self.topics}
+# Please return ONLY the topic name. DO NOT OUTPUT any additional text, quotes, or formatting.'''
+
+#     def _classify_single_document(self, doc_with_index):
+#         """
+#         Classify a single document. This method will be called by each thread.
+#         Args:
+#             doc_with_index: Tuple of (index, document) to maintain order
+#         Returns:
+#             Tuple of (index, prediction)
+#         """
+#         index, doc = doc_with_index
+#         try:
+#             prompt = self.generate_prompt(doc)
+#             response = self.model.invoke(prompt)
+#             response = response.strip()
+#             prediction = response.replace('``', '').replace('"', '').replace("'", "")
+#             return index, prediction
+#         except Exception as e:
+#             print(f"Error processing document at index {index}: {str(e)}")
+#             return index, ""  # Return empty string for failed predictions
+
+#     def predict_classes(self, documents):
+#         """
+#         Predict classes for documents using multithreading with max 4 concurrent threads.
+#         Args:
+#             documents: Array-like of documents to classify
+#         Returns:
+#             numpy array of predicted class indices
+#         """
+#         docs_list = documents.tolist()
+#         predictions = [None] * len(docs_list)  # Pre-allocate list to maintain order
+        
+#         # Create list of (index, document) tuples to maintain order
+#         indexed_docs = list(enumerate(docs_list))
+        
+#         # Use ThreadPoolExecutor with max 4 workers
+#         with ThreadPoolExecutor(max_workers=4, thread_name_prefix="LLM-Classifier") as executor:
+#             # Submit all tasks
+#             future_to_index = {
+#                 executor.submit(self._classify_single_document, doc_with_index): doc_with_index[0] 
+#                 for doc_with_index in indexed_docs
+#             }
+            
+#             # Process completed tasks with progress bar
+#             with tqdm(total=len(docs_list), desc="Classifying with LLM (4 threads)") as pbar:
+#                 for future in as_completed(future_to_index):
+#                     try:
+#                         index, prediction = future.result()
+#                         predictions[index] = prediction
+#                         pbar.update(1)
+#                     except Exception as e:
+#                         index = future_to_index[future]
+#                         print(f"Thread failed for document {index}: {str(e)}")
+#                         predictions[index] = ""  # Default for failed predictions
+#                         pbar.update(1)
+        
+#         # Map text predictions to class indices
+#         text_to_class_mapping = self.topics_mapping
+#         preds_mapped = [text_to_class_mapping.get(pred, -1) for pred in predictions]
+        
+#         return np.array(preds_mapped)
+
+#     def predict_classes_with_detailed_progress(self, documents):
+#         """
+#         Alternative method with more detailed progress tracking.
+#         Shows both submitted and completed tasks.
+#         """
+#         docs_list = documents.tolist()
+#         predictions = [None] * len(docs_list)
+#         indexed_docs = list(enumerate(docs_list))
+        
+#         with ThreadPoolExecutor(max_workers=4, thread_name_prefix="LLM-Classifier") as executor:
+#             # Submit all tasks and track futures
+#             futures = []
+#             print(f"Submitting {len(indexed_docs)} classification tasks...")
+            
+#             for doc_with_index in indexed_docs:
+#                 future = executor.submit(self._classify_single_document, doc_with_index)
+#                 futures.append((future, doc_with_index[0]))
+            
+#             print(f"All tasks submitted. Processing with max 4 concurrent threads...")
+            
+#             # Process results as they complete
+#             completed = 0
+#             with tqdm(total=len(docs_list), desc="Classifying") as pbar:
+#                 for future, original_index in futures:
+#                     try:
+#                         index, prediction = future.result()
+#                         predictions[index] = prediction
+#                         completed += 1
+#                         pbar.set_postfix({
+#                             'completed': completed, 
+#                             'active_threads': min(4, len(docs_list) - completed)
+#                         })
+#                         pbar.update(1)
+#                     except Exception as e:
+#                         print(f"Error processing document {original_index}: {str(e)}")
+#                         predictions[original_index] = ""
+#                         pbar.update(1)
+        
+#         # Map predictions to class indices
+#         text_to_class_mapping = self.topics_mapping
+#         preds_mapped = [text_to_class_mapping.get(pred, -1) for pred in predictions]
+        
+#         return np.array(preds_mapped)
