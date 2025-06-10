@@ -1,0 +1,22 @@
+Dataset,Noise,Model,ARI Score,Topics Coherence,Cosine Similarity,Reconstruction Error
+BBC News Full,AddRandomCharsNoise,LDA_4,-0.0,0.37,1.0,
+BBC News Full,AddRandomCharsNoise,LSI_4,0.02,0.63,0.59,
+BBC News Full,AddRandomCharsNoise,NMF_4,0.57,0.78,0.45,36.45723472773182
+BBC News Full,AddRandomWordsNoise,LDA_4,0.0,0.65,1.0,
+BBC News Full,AddRandomWordsNoise,LSI_4,0.02,0.55,0.61,
+BBC News Full,AddRandomWordsNoise,NMF_4,0.61,0.78,0.45,36.30128622577749
+BBC News Full,DeleteRandomWordsNoise,LDA_4,0.07,0.46,0.83,
+BBC News Full,DeleteRandomWordsNoise,LSI_4,0.03,0.61,0.58,
+BBC News Full,DeleteRandomWordsNoise,NMF_4,0.63,0.76,0.44,36.14470195641576
+BBC News Full,NoNoise,LDA_4,0.05,0.38,0.79,
+BBC News Full,NoNoise,LSI_4,0.02,0.6,0.58,
+BBC News Full,NoNoise,NMF_4,0.57,0.75,0.45,36.04768682273319
+BBC News Full,ReplaceWithAntonymsNoise,LDA_4,0.01,0.44,0.94,
+BBC News Full,ReplaceWithAntonymsNoise,LSI_4,0.02,0.61,0.59,
+BBC News Full,ReplaceWithAntonymsNoise,NMF_4,0.61,0.75,0.44,36.05656055738295
+BBC News Full,ReplaceWithSynonymsNoise,LDA_4,-0.0,0.31,1.0,
+BBC News Full,ReplaceWithSynonymsNoise,LSI_4,0.02,0.62,0.59,
+BBC News Full,ReplaceWithSynonymsNoise,NMF_4,0.56,0.73,0.46,36.11123358083346
+BBC News Full,ShuffleSentencesNoise,LDA_4,0.05,0.39,0.79,
+BBC News Full,ShuffleSentencesNoise,LSI_4,0.02,0.61,0.58,
+BBC News Full,ShuffleSentencesNoise,NMF_4,0.57,0.76,0.45,36.0476868227332

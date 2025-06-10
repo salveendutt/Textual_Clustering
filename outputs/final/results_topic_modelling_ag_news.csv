@@ -1,0 +1,22 @@
+Dataset,Noise,Model,ARI Score,Topics Coherence,Cosine Similarity,Reconstruction Error
+AG News Full,AddRandomCharsNoise,LDA_4,0.0,0.32,0.35,
+AG News Full,AddRandomCharsNoise,LSI_4,0.01,0.57,0.67,
+AG News Full,AddRandomCharsNoise,NMF_4,0.22,0.66,0.59,86.62728245494098
+AG News Full,AddRandomWordsNoise,LDA_4,0.0,0.38,0.35,
+AG News Full,AddRandomWordsNoise,LSI_4,0.01,0.62,0.62,
+AG News Full,AddRandomWordsNoise,NMF_4,0.18,0.68,0.63,86.55319557320027
+AG News Full,DeleteRandomWordsNoise,LDA_4,0.18,0.54,0.44,
+AG News Full,DeleteRandomWordsNoise,LSI_4,0.01,0.56,0.57,
+AG News Full,DeleteRandomWordsNoise,NMF_4,0.35,0.69,0.47,86.39921637517219
+AG News Full,NoNoise,LDA_4,0.1,0.55,0.43,
+AG News Full,NoNoise,LSI_4,0.11,0.63,0.56,
+AG News Full,NoNoise,NMF_4,0.41,0.72,0.47,86.28456028949256
+AG News Full,ReplaceWithAntonymsNoise,LDA_4,0.24,0.51,0.5,
+AG News Full,ReplaceWithAntonymsNoise,LSI_4,0.03,0.62,0.66,
+AG News Full,ReplaceWithAntonymsNoise,NMF_4,0.21,0.7,0.6,86.18213701666797
+AG News Full,ReplaceWithSynonymsNoise,LDA_4,0.05,0.47,0.41,
+AG News Full,ReplaceWithSynonymsNoise,LSI_4,0.03,0.6,0.67,
+AG News Full,ReplaceWithSynonymsNoise,NMF_4,0.21,0.7,0.61,86.22056601968433
+AG News Full,ShuffleSentencesNoise,LDA_4,0.1,0.55,0.43,
+AG News Full,ShuffleSentencesNoise,LSI_4,0.11,0.63,0.56,
+AG News Full,ShuffleSentencesNoise,NMF_4,0.41,0.72,0.47,86.28456028949256
