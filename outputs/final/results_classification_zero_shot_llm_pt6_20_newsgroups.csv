@@ -1,0 +1,2 @@
+Dataset,Noise,Model,Accuracy,F1 Score,Precision,Recall
+20 Newsgroups Full,ReplaceWithSynonymsNoise,LLMClassifier,0.58,0.57,0.6,0.58

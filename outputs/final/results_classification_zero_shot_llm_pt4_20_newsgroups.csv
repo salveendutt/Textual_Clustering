@@ -1,0 +1,2 @@
+Dataset,Noise,Model,Accuracy,F1 Score,Precision,Recall
+20 Newsgroups Full,DeleteRandomWordsNoise,LLMClassifier,0.55,0.54,0.56,0.55
